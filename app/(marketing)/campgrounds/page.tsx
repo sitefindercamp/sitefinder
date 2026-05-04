@@ -1,9 +1,9 @@
 import type { Route } from "next";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
-import { MapPin, Search, SlidersHorizontal, X } from "lucide-react";
+import { MapPin, Search, ShieldCheck, SlidersHorizontal, TentTree, X } from "lucide-react";
 
-import { CampgroundCard } from "@/components/campgrounds/campground-card";
+import { CompactCampgroundCard } from "@/components/campgrounds/campground-card";
 import { Container } from "@/components/layout/container";
 import { PageIntro } from "@/components/layout/page-intro";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import {
 } from "@/lib/campgrounds";
 import { CAMPGROUND_AMENITIES, type Campground, type CampgroundAmenityKey } from "@/types/campground";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 30;
 const AMENITY_KEYS = new Set(CAMPGROUND_AMENITIES.map((amenity) => amenity.key));
 
 export const metadata = {
@@ -111,12 +111,12 @@ function Pagination({
 }) {
   if (totalPages <= 1) return null;
   const linkClass =
-    "inline-flex h-11 items-center justify-center rounded-full border border-border bg-background px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary";
+    "inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary";
   const disabledClass =
-    "inline-flex h-11 items-center justify-center rounded-full border border-border bg-background px-5 py-2 text-sm font-medium text-muted-foreground/50";
+    "inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-muted-foreground/50";
 
   return (
-    <nav className="mt-10 flex items-center justify-center gap-2" aria-label="Pagination">
+    <nav className="mt-6 flex items-center justify-center gap-2" aria-label="Pagination">
       {page > 1 ? (
         <Link href={buildPageUrl(filters, page - 1) as Route} className={linkClass}>
           Previous
@@ -135,6 +135,80 @@ function Pagination({
         <span className={disabledClass}>Next</span>
       )}
     </nav>
+  );
+}
+
+function DirectorySidebar({ totalCount, filters }: { totalCount: number; filters: CampgroundFilters }) {
+  const quickFilters = [
+    { label: "Full hookups", href: "/campgrounds?amenities=full_hookups" },
+    { label: "Pet friendly", href: "/campgrounds?amenities=pet_friendly" },
+    { label: "50 amp", href: "/campgrounds?amenities=amp_50" },
+    { label: "Monthly stays", href: "/campgrounds?amenities=monthly_stays" },
+  ];
+  const activeSearch = [filters.q, filters.city, filters.state, filters.campground_type].filter(Boolean).join(", ");
+
+  return (
+    <aside className="space-y-4 lg:sticky lg:top-24">
+      <div className="rounded-lg border border-dashed border-primary/30 bg-secondary/35 p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">Ad</p>
+        <div className="mt-3 flex aspect-[4/3] items-center justify-center rounded-md border border-border bg-white text-center">
+          <div>
+            <p className="text-lg font-semibold">Advertise here</p>
+            <p className="mt-1 text-sm text-muted-foreground">300 x 250</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="flex items-center gap-2">
+          <TentTree className="size-5 text-primary" />
+          <h2 className="font-semibold">Directory snapshot</h2>
+        </div>
+        <dl className="mt-4 grid gap-3 text-sm">
+          <div className="flex items-center justify-between gap-3">
+            <dt className="text-muted-foreground">Matching listings</dt>
+            <dd className="font-semibold text-foreground">{totalCount.toLocaleString()}</dd>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <dt className="text-muted-foreground">Current search</dt>
+            <dd className="max-w-[150px] truncate text-right font-medium text-foreground">
+              {activeSearch || "All campgrounds"}
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="flex items-center gap-2">
+          <SlidersHorizontal className="size-5 text-primary" />
+          <h2 className="font-semibold">Quick filters</h2>
+        </div>
+        <div className="mt-3 grid gap-2">
+          {quickFilters.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href as Route}
+              className="rounded-md border border-border px-3 py-2 text-sm font-medium hover:border-primary/35 hover:bg-secondary"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-5 text-primary" />
+          <h2 className="font-semibold">Planning tools</h2>
+        </div>
+        <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
+          <li>Featured campground picks</li>
+          <li>State guide links</li>
+          <li>Newsletter signup</li>
+          <li>Saved places</li>
+        </ul>
+      </div>
+    </aside>
   );
 }
 
@@ -168,17 +242,23 @@ export default async function CampgroundsPage({ searchParams }: Props) {
   const totalPages = Math.max(1, Math.ceil(result.totalCount / PAGE_SIZE));
 
   return (
-    <Container className="py-10 sm:py-14">
-      <div className="flex flex-col gap-8">
-        <PageIntro
-          eyebrow="Campground Directory"
-          title="Find RV parks and campgrounds"
-          description="Search by location, campground type, and practical RV amenities from the SiteFinder.Camp database."
-        />
+    <Container className="py-8 sm:py-10">
+      <div className="flex flex-col gap-6">
+        <div className="grid gap-4 lg:grid-cols-[1fr_300px] lg:items-end">
+          <PageIntro
+            eyebrow="Campground Directory"
+            title="Find RV parks and campgrounds"
+            description="Search by location, campground type, and practical RV amenities from the SiteFinder.Camp database."
+          />
+          <div className="hidden rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground lg:block">
+            <p className="font-medium text-foreground">Compact results</p>
+            <p className="mt-1">Scan more listings with filters, contacts, and quick links close by.</p>
+          </div>
+        </div>
 
         <Card className="rounded-lg">
-          <CardContent className="p-5">
-            <form className="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto]" action="/campgrounds">
+          <CardContent className="p-4">
+            <form className="grid gap-3 lg:grid-cols-[1.3fr_0.8fr_0.8fr_0.8fr_auto]" action="/campgrounds">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="q">Search</Label>
                 <div className="relative">
@@ -188,7 +268,7 @@ export default async function CampgroundsPage({ searchParams }: Props) {
                     name="q"
                     defaultValue={filters.q}
                     placeholder="Name, city, zip, or type"
-                    className="pl-9"
+                    className="rounded-lg pl-9"
                   />
                 </div>
               </div>
@@ -228,9 +308,9 @@ export default async function CampgroundsPage({ searchParams }: Props) {
                 </Button>
               </div>
 
-              <fieldset className="grid gap-3 border-t border-border pt-4 lg:col-span-5">
-                <legend className="mb-1 text-sm font-medium text-foreground">Amenities</legend>
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              <fieldset className="grid gap-3 border-t border-border pt-3 lg:col-span-5">
+                <legend className="mb-1 text-sm font-semibold text-foreground">Amenities</legend>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
                   {CAMPGROUND_AMENITIES.map((amenity) => (
                     <label key={amenity.key} className="flex items-center gap-2 text-sm">
                       <input
@@ -249,40 +329,46 @@ export default async function CampgroundsPage({ searchParams }: Props) {
           </CardContent>
         </Card>
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-muted-foreground">
-            {loadError
-              ? "Campground listings are temporarily unavailable"
-              : `${result.totalCount.toLocaleString()} campground${result.totalCount === 1 ? "" : "s"} found`}
-          </p>
-          <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-4" />
-            Showing published SiteFinder listings
-          </p>
-        </div>
-
-        {result.campgrounds.length > 0 ? (
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {result.campgrounds.map((campground) => (
-              <CampgroundCard key={campground.id} campground={campground} />
-            ))}
-          </div>
-        ) : (
-          <Card className="rounded-lg">
-            <CardContent className="p-8 text-center">
-              <h2 className="text-xl font-semibold">
-                {loadError ? "Unable to load campgrounds" : "No campgrounds found"}
-              </h2>
-              <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="min-w-0">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm font-medium text-muted-foreground">
                 {loadError
-                  ? "Please refresh the page in a moment."
-                  : "Try clearing a filter or searching a wider area."}
+                  ? "Campground listings are temporarily unavailable"
+                  : `${result.totalCount.toLocaleString()} campground${result.totalCount === 1 ? "" : "s"} found`}
               </p>
-            </CardContent>
-          </Card>
-        )}
+              <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                <MapPin className="size-4" />
+                Showing published SiteFinder listings
+              </p>
+            </div>
 
-        <Pagination page={page} totalPages={totalPages} filters={filters} />
+            {result.campgrounds.length > 0 ? (
+              <div className="grid gap-3">
+                {result.campgrounds.map((campground) => (
+                  <CompactCampgroundCard key={campground.id} campground={campground} />
+                ))}
+              </div>
+            ) : (
+              <Card className="rounded-lg">
+                <CardContent className="p-8 text-center">
+                  <h2 className="text-xl font-semibold">
+                    {loadError ? "Unable to load campgrounds" : "No campgrounds found"}
+                  </h2>
+                  <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
+                    {loadError
+                      ? "Please refresh the page in a moment."
+                      : "Try clearing a filter or searching a wider area."}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            <Pagination page={page} totalPages={totalPages} filters={filters} />
+          </div>
+
+          <DirectorySidebar totalCount={result.totalCount} filters={filters} />
+        </div>
       </div>
     </Container>
   );

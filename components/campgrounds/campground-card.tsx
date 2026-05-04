@@ -1,6 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
-import { ArrowUpRight, MapPin, Plug, Waves } from "lucide-react";
+import { ArrowUpRight, ExternalLink, MapPin, Phone, Plug, Waves } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,5 +71,98 @@ export function CampgroundCard({ campground }: { campground: Campground }) {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+export function CompactCampgroundCard({ campground }: { campground: Campground }) {
+  const amenityLabels = getAmenityLabels(campground);
+  const location = [campground.city, campground.state].filter(Boolean).join(", ");
+  const hasContact = Boolean(campground.phone || campground.website);
+
+  return (
+    <article className="rounded-lg border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/35">
+      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            {campground.campground_type ? (
+              <Badge variant="secondary" className="rounded-md px-2 py-0.5">
+                {campground.campground_type}
+              </Badge>
+            ) : null}
+            {campground.full_hookups ? (
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-primary">
+                Full hookups
+              </Badge>
+            ) : null}
+          </div>
+
+          <h2 className="mt-2 text-lg font-semibold leading-tight text-foreground">
+            <Link href={`/campgrounds/${campground.slug}` as Route} className="hover:text-primary">
+              {campground.name}
+            </Link>
+          </h2>
+
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            {location ? (
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin className="size-4" />
+                {location}
+              </span>
+            ) : null}
+            <span>{campground.price_range ?? "Pricing varies"}</span>
+          </div>
+
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+            {campground.description ?? "Campground details are being prepared."}
+          </p>
+
+          {amenityLabels.length > 0 ? (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {amenityLabels.slice(0, 3).map((label) => (
+                <span
+                  key={label}
+                  className="rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex items-center gap-2 sm:flex-col sm:items-end sm:justify-between">
+          <Link
+            href={`/campgrounds/${campground.slug}` as Route}
+            className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            Details
+          </Link>
+          {hasContact ? (
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              {campground.phone ? (
+                <a
+                  href={`tel:${campground.phone}`}
+                  aria-label={`Call ${campground.name}`}
+                  className="inline-flex size-9 items-center justify-center rounded-md border border-border hover:bg-secondary hover:text-foreground"
+                >
+                  <Phone className="size-4" />
+                </a>
+              ) : null}
+              {campground.website ? (
+                <a
+                  href={campground.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Visit ${campground.name} website`}
+                  className="inline-flex size-9 items-center justify-center rounded-md border border-border hover:bg-secondary hover:text-foreground"
+                >
+                  <ExternalLink className="size-4" />
+                </a>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </article>
   );
 }
