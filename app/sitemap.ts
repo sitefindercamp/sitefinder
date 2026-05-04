@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
+import { siteConfig } from "@/lib/site";
 
-const BASE_URL = "https://sitefinder.camp";
+const BASE_URL = siteConfig.url;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createSupabaseAdminClient();

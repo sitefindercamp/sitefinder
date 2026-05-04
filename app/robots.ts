@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/owner/", "/api/", "/login", "/signin", "/signup"],
       },
     ],
-    sitemap: "https://sitefinder.camp/sitemap.xml",
+    sitemap: `${siteConfig.url}/sitemap.xml`,
   };
 }

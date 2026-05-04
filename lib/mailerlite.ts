@@ -5,6 +5,7 @@ const RESEND_API_URL = "https://api.resend.com/emails";
 const FROM_EMAIL = "hello@sitefinder.camp";
 const FROM_NAME = "SiteFinder.Camp";
 const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL ?? "hello@sitefinder.camp";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://project-36ehq.vercel.app";
 
 type EmailPayload = {
   from: string;
@@ -334,7 +335,7 @@ export async function sendCampgroundSubmissionNotification(data: CampgroundSubmi
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
         <h2 style="margin-bottom:4px">New campground submission</h2>
-        <p style="color:#666;margin-top:0">Submitted via <a href="https://sitefinder.camp/submit">sitefinder.camp/submit</a></p>
+        <p style="color:#666;margin-top:0">Submitted via <a href="${SITE_URL}/submit">${SITE_URL.replace(/^https?:\/\//, "")}/submit</a></p>
         <table style="width:100%;border-collapse:collapse;margin-top:20px">
           <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;width:120px">Campground</td><td style="padding:8px 0;border-bottom:1px solid #eee"><strong>${data.campgroundName}</strong></td></tr>
           <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666">Location</td><td style="padding:8px 0;border-bottom:1px solid #eee">${data.city}, ${data.state}</td></tr>

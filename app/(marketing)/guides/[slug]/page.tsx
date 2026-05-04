@@ -15,8 +15,7 @@ import { processBlogContent } from "@/lib/process-blog-content";
 import { injectGlossaryTooltips } from "@/lib/glossary";
 import { AUDIENCE_TAGS } from "@/lib/audience-tags";
 import { getCtaSpas } from "@/lib/spa-cta";
-
-const BASE_URL = "https://sitefinder.camp";
+import { siteConfig } from "@/lib/site";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -65,7 +64,7 @@ export default async function GuidePostPage({ params }: Props) {
   const post = await getPublishedBlogPostBySlug(slug);
   if (!post) notFound();
 
-  const pageUrl = `${BASE_URL}/guides/${slug}`;
+  const pageUrl = `${siteConfig.url}/guides/${slug}`;
 
   // Parse headings + inject IDs + inject glossary tooltips, then split segments
   const tocEntries = post.content ? parseHeadings(post.content) : [];

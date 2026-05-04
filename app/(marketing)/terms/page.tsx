@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Container } from "@/components/layout/container";
+import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "May 2, 2026";
 const CONTACT_EMAIL = "hello@sitefinder.camp";
-const SITE_URL = "https://sitefinder.camp";
+const SITE_URL = siteConfig.url;
 const COMPANY_NAME = "SiteFinder.Camp";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {

@@ -9,8 +9,7 @@ import { Container } from "@/components/layout/container";
 import { ShareButtons } from "@/components/share-buttons";
 import { getPublishedBlogPostBySlug } from "@/lib/blog-posts";
 import { processBlogContent } from "@/lib/process-blog-content";
-
-const BASE_URL = "https://sitefinder.camp";
+import { siteConfig } from "@/lib/site";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -39,7 +38,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPublishedBlogPostBySlug(slug);
   if (!post || post.post_type !== "blog") notFound();
 
-  const pageUrl = `${BASE_URL}/blog/${slug}`;
+  const pageUrl = `${siteConfig.url}/blog/${slug}`;
 
   return (
     <div className="pb-20">
