@@ -2,9 +2,9 @@
 
 import type { Route } from "next";
 import { redirect } from "next/navigation";
-import { importSpasFromCSV } from "@/lib/spa-importer";
+import { importCampgroundsFromCSV } from "@/lib/campground-importer";
 
-export async function importSpasAction(formData: FormData) {
+export async function importCampgroundsAction(formData: FormData) {
   const file = formData.get("file") as File | null;
 
   if (!file || file.size === 0) {
@@ -20,7 +20,7 @@ export async function importSpasAction(formData: FormData) {
   }
 
   const text = await file.text();
-  const result = await importSpasFromCSV(text, file.name);
+  const result = await importCampgroundsFromCSV(text, file.name);
 
   if (result.runId) {
     redirect(`/admin/imports/${result.runId}` as Route);

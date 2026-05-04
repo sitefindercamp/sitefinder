@@ -16,7 +16,8 @@ export type ImportRunError = {
   id: string;
   import_run_id: string;
   row_number: number | null;
-  spa_name: string | null;
+  campground_name?: string | null;
+  spa_name?: string | null;
   error_message: string | null;
   raw_data: Record<string, unknown> | null;
   created_at: string;
@@ -91,7 +92,14 @@ export async function recordImportError(
   err: Omit<ImportRunError, "id" | "import_run_id" | "created_at">
 ): Promise<void> {
   const supabase = createSupabaseAdminClient();
+
   await supabase
     .from("import_run_errors")
-    .insert({ ...err, import_run_id: importRunId });
+    .insert({
+      row_number: err.row_number,
+      campground_name: err.campground_name ?? err.spa_name ?? null,
+      error_message: err.error_message,
+      raw_data: err.raw_data,
+      import_run_id: importRunId,
+    });
 }

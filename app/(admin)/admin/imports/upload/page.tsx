@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import { PageIntro } from "@/components/layout/page-intro";
 import { Button } from "@/components/ui/button";
-import { importSpasAction } from "../actions";
+import { importCampgroundsAction } from "../actions";
 
-export const metadata = { title: "Import Spas | Admin" };
+export const metadata = { title: "Import Campgrounds | Admin" };
 
 type Props = {
   searchParams?: Promise<{ error?: string }>;
@@ -20,8 +20,8 @@ export default async function ImportUploadPage({ searchParams }: Props) {
       <div className="flex items-start justify-between gap-4">
         <PageIntro
           eyebrow="Admin · Imports"
-          title="Import spas from CSV"
-          description="Upload a CSV file to bulk-insert or update spa listings."
+          title="Import campgrounds from CSV"
+          description="Upload a CSV file to bulk-insert campground listings."
         />
         <Link
           href={"/admin/imports" as Route}
@@ -37,7 +37,7 @@ export default async function ImportUploadPage({ searchParams }: Props) {
         </div>
       )}
 
-      <form action={importSpasAction} className="flex flex-col gap-6">
+      <form action={importCampgroundsAction} className="flex flex-col gap-6">
         <div className="rounded-2xl border border-border bg-card p-6 flex flex-col gap-5">
 
           {/* File input */}
@@ -65,12 +65,10 @@ export default async function ImportUploadPage({ searchParams }: Props) {
             <p className="font-medium text-foreground">How it works</p>
             <ul className="list-disc list-inside space-y-1">
               <li>Row 1 must be column headers (matches the template exactly).</li>
-              <li>The notes/guidance row from the template is automatically skipped.</li>
-              <li><strong>name</strong> and <strong>city</strong> are required on every row.</li>
-              <li>If <strong>slug</strong> is blank, one is generated from the spa name.</li>
-              <li>If a spa with that slug already exists it will be <strong>skipped</strong>, not duplicated.</li>
-              <li>Amenities and listing_categories use <strong>pipe separation</strong>: <code className="rounded bg-secondary px-1">Dry Sauna|Hot Tub</code></li>
-              <li>Status defaults to <strong>draft</strong> if left blank.</li>
+              <li><strong>name</strong>, <strong>city</strong>, and <strong>state</strong> are required on every row.</li>
+              <li>Slugs are generated from campground name, city, and state.</li>
+              <li>Amenity columns accept <strong>true</strong>, <strong>false</strong>, or a blank value.</li>
+              <li>Imported rows are published by default.</li>
             </ul>
           </div>
         </div>

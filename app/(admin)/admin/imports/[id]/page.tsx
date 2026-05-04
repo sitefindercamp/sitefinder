@@ -97,7 +97,7 @@ export default async function AdminImportDetailPage({ params }: Props) {
               <thead className="border-b border-border bg-secondary/30">
                 <tr>
                   <th className="px-4 py-3 font-medium text-muted-foreground">Row</th>
-                  <th className="px-4 py-3 font-medium text-muted-foreground">Spa name</th>
+                  <th className="px-4 py-3 font-medium text-muted-foreground">Campground name</th>
                   <th className="px-4 py-3 font-medium text-muted-foreground">Error</th>
                   <th className="px-4 py-3 font-medium text-muted-foreground">Raw data</th>
                 </tr>
@@ -112,7 +112,7 @@ export default async function AdminImportDetailPage({ params }: Props) {
                       {err.row_number ?? "—"}
                     </td>
                     <td className="px-4 py-3 font-medium">
-                      {err.spa_name ?? "—"}
+                      {err.campground_name ?? "—"}
                     </td>
                     <td className="px-4 py-3 text-red-600">
                       {err.error_message ?? "—"}
