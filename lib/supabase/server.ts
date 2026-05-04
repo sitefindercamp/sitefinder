@@ -16,9 +16,14 @@ type CookieToSet = {
 };
 
 function applyCookies(cookieStore: CookieStore, cookiesToSet: CookieToSet[]) {
-  cookiesToSet.forEach(({ name, value, options }) => {
-    cookieStore.set(name, value, options);
-  });
+  try {
+    cookiesToSet.forEach(({ name, value, options }) => {
+      cookieStore.set(name, value, options);
+    });
+  } catch {
+    // Server Components cannot always write refreshed auth cookies during render.
+    // Middleware/auth routes can handle cookie persistence on the next request.
+  }
 }
 
 export async function createSupabaseServerClient() {
