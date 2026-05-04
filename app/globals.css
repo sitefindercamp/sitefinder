@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 60% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --primary: 173 55% 24%;
+  --primary-foreground: 60 9% 98%;
+  --secondary: 42 45% 92%;
+  --secondary-foreground: 222 47% 14%;
+  --muted: 38 36% 94%;
+  --muted-foreground: 215 16% 40%;
+  --accent: 26 84% 90%;
+  --accent-foreground: 24 52% 22%;
+  --border: 31 28% 84%;
+  --input: 31 28% 84%;
+  --ring: 173 55% 24%;
+  --radius: 1rem;
+  --font-sans: "Sora";
+}
+
+* {
+  @apply border-border;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  background-image:
+    radial-gradient(circle at top, rgba(252, 235, 217, 0.9), transparent 32%),
+    linear-gradient(180deg, rgba(247, 244, 239, 1) 0%, rgba(255, 255, 255, 1) 65%);
+  min-height: 100vh;
+}
+
+a {
+  @apply transition-colors;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.18);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight text-balance;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+}
+
+@layer utilities {
+  .surface {
+    @apply rounded-[28px] border border-white/60 bg-white/80 backdrop-blur-sm;
+  }
+}
+
+/* Article prose — used for blog/guide content rendered from rich-text HTML */
+.article-prose {
+  @apply text-[1.0625rem] leading-[1.85] text-foreground;
+}
+.article-prose h1 {
+  @apply mt-10 mb-4 text-3xl font-semibold leading-tight tracking-tight;
+}
+.article-prose h2 {
+  @apply mt-10 mb-3 text-2xl font-semibold leading-tight tracking-tight;
+}
+.article-prose h3 {
+  @apply mt-8 mb-2 text-xl font-semibold leading-snug;
+}
+.article-prose p {
+  @apply mb-6;
+}
+.article-prose ul {
+  @apply mb-6 ml-6 list-disc space-y-2;
+}
+.article-prose ol {
+  @apply mb-6 ml-6 list-decimal space-y-2;
+}
+.article-prose li {
+  @apply leading-[1.75];
+}
+.article-prose li > p {
+  @apply mb-0;
+}
+.article-prose strong {
+  @apply font-semibold text-foreground;
+}
+.article-prose em {
+  @apply italic;
+}
+.article-prose u {
+  @apply underline underline-offset-2;
+}
+.article-prose a {
+  @apply text-primary underline underline-offset-2 hover:text-primary/80;
+}
+.article-prose hr {
+  @apply my-10 border-border;
+}
+.article-prose blockquote {
+  @apply my-8 border-l-4 border-primary/30 pl-6 italic text-muted-foreground;
+}
+.article-prose blockquote p {
+  @apply mb-0;
+}
+/* Compact variant — used inside spa detail cards */
+.article-prose--sm {
+  @apply text-sm leading-6;
+}
+.article-prose--sm h1,
+.article-prose--sm h2,
+.article-prose--sm h3 {
+  @apply mt-4 mb-2 text-base font-semibold;
+}
+.article-prose--sm p {
+  @apply mb-3;
+}
+.article-prose--sm ul,
+.article-prose--sm ol {
+  @apply mb-3 ml-4 space-y-1;
+}
+.article-prose--sm blockquote {
+  @apply my-4 pl-4;
+}
+
+/* ── Guide checklist (inserted via rich-text editor toolbar) ─────────────── */
+/*
+  Structure written to DB by the ChecklistBlock/ChecklistItem extensions:
+    <ul class="guide-checklist">
+      <li>Item text</li>
+      ...
+    </ul>
+*/
+.article-prose .guide-checklist {
+  @apply my-8 list-none space-y-1 rounded-2xl border border-border bg-secondary/20 p-5 pl-5;
+  padding-left: 1.25rem;
+}
+.article-prose .guide-checklist li {
+  @apply flex items-start gap-3 py-1 text-sm leading-6 text-foreground;
+}
+.article-prose .guide-checklist li::before {
+  content: "";
+  display: flex;
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.125rem;
+  border-radius: 4px;
+  border: 2px solid hsl(var(--primary) / 0.5);
+  background-color: hsl(var(--primary) / 0.06);
+}
+
+/* ── Glossary term hover tooltips (auto-injected server-side) ─────────────── */
+.glossary-term {
+  @apply relative cursor-help border-b border-dashed border-primary/50;
+}
+.glossary-tooltip {
+  @apply pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 hidden w-max max-w-[220px] -translate-x-1/2 rounded-xl bg-foreground px-3 py-2 text-left text-xs leading-[1.45] text-background shadow-lg;
+  white-space: normal;
+}
+/* Arrow pointing down */
+.glossary-tooltip::after {
+  content: "";
+  @apply absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent;
+  border-top-color: hsl(var(--foreground));
+}
+.glossary-term:hover .glossary-tooltip,
+.glossary-term:focus .glossary-tooltip {
+  @apply block;
+}
+
+/* ── Guide "What you'll learn" intro box ───────────────── */
+.guide-learn-box {
+  @apply mb-10 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4;
+}
+
+/* ── Guide callout boxes (inserted via rich-text editor toolbar) ─────────── */
+/*
+  Structure written to DB by the Tiptap CalloutExtension:
+    <div class="callout callout-tip">
+      <p class="callout-label">Pro Tip</p>
+      <div class="callout-content"> ... </div>
+    </div>
+*/
+.article-prose .callout {
+  @apply my-8 rounded-2xl border px-5 pt-3 pb-4;
+}
+/* Remove bottom margin from the last paragraph inside callout-content */
+.article-prose .callout-content p:last-child {
+  @apply mb-0;
+}
+.article-prose .callout-label {
+  @apply mb-2 text-xs font-semibold uppercase tracking-[0.14em];
+}
+
+/* Pro Tip — green */
+.article-prose .callout-tip {
+  @apply border-green-200 bg-green-50/60;
+}
+.article-prose .callout-tip .callout-label {
+  @apply text-green-700;
+}
+
+/* First-timer — blue */
+.article-prose .callout-note {
+  @apply border-blue-200 bg-blue-50/60;
+}
+.article-prose .callout-note .callout-label {
+  @apply text-blue-700;
+}
+
+/* Etiquette — purple */
+.article-prose .callout-etiquette {
+  @apply border-purple-200 bg-purple-50/60;
+}
+.article-prose .callout-etiquette .callout-label {
+  @apply text-purple-700;
+}
+
+/* Watch out — amber */
+.article-prose .callout-warning {
+  @apply border-amber-200 bg-amber-50/60;
+}
+.article-prose .callout-warning .callout-label {
+  @apply text-amber-700;
+}
+
+/* ── Guide CTA blocks (inserted via rich-text editor toolbar) ───────────── */
+/*
+  Structure written to DB by the Tiptap CtaExtension (after processBlogContent):
+    <div class="guide-cta" data-variant="couples">
+      <p class="guide-cta-heading">Planning a couples retreat?</p>
+      <p class="guide-cta-body">Many Korean spas have...</p>
+      <a href="/spas" class="guide-cta-link">Browse couples-friendly spas →</a>
+    </div>
+*/
+.article-prose .guide-cta {
+  @apply my-8 flex flex-col gap-1.5 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4 no-underline;
+}
+.article-prose .guide-cta-heading {
+  @apply text-sm font-semibold text-foreground;
+}
+.article-prose .guide-cta-body {
+  @apply text-xs text-muted-foreground;
+}
+.article-prose .guide-cta-link {
+  @apply mt-1 text-xs font-medium text-primary no-underline hover:underline;
+}
+
