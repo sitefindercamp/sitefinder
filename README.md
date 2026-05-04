@@ -2,6 +2,8 @@
 
 Database website for RV parks, campgrounds, and camping destinations.
 
+Deployed with Vercel from the SiteFinder.Camp GitHub repository.
+
 ## Stack
 
 - Next.js App Router
