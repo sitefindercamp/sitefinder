@@ -9,9 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitContactAction } from "./actions";
 
 export const metadata: Metadata = {
-  title: "Contact | KSpa Online",
+  title: "Contact",
   description:
-    "Get in touch with the KSpa Online team. Questions, feedback, spa submissions, or press inquiries — we'd love to hear from you.",
+    "Get in touch with the SiteFinder.Camp team. Questions, feedback, campground submissions, or press inquiries are welcome.",
 };
 
 type Props = {
@@ -34,28 +34,28 @@ export default async function ContactPage({ searchParams }: Props) {
           Contact us
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          Questions, feedback, spa listing requests, or press inquiries — we
+          Questions, feedback, campground listing requests, or press inquiries — we
           read everything and reply promptly.
         </p>
       </div>
 
       {/* Contact methods */}
       <div className="mb-10 grid gap-4 sm:grid-cols-2">
-        <div className="flex items-start gap-4 rounded-2xl border border-border bg-muted/30 p-5">
+        <div className="flex items-start gap-4 rounded-lg border border-border bg-muted/30 p-5">
           <div className="rounded-full bg-primary/10 p-2.5">
             <Mail className="size-4 text-primary" />
           </div>
           <div>
             <p className="text-sm font-semibold">Email us directly</p>
             <a
-              href="mailto:koreanspa@proton.me"
+              href="mailto:hello@sitefinder.camp"
               className="mt-1 block text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
             >
-              koreanspa@proton.me
+              hello@sitefinder.camp
             </a>
           </div>
         </div>
-        <div className="flex items-start gap-4 rounded-2xl border border-border bg-muted/30 p-5">
+        <div className="flex items-start gap-4 rounded-lg border border-border bg-muted/30 p-5">
           <div className="rounded-full bg-primary/10 p-2.5">
             <MessageSquare className="size-4 text-primary" />
           </div>
@@ -70,7 +70,7 @@ export default async function ContactPage({ searchParams }: Props) {
 
       {/* Success state */}
       {success ? (
-        <div className="rounded-2xl border border-green-200 bg-green-50 px-6 py-8 text-center">
+        <div className="rounded-lg border border-green-200 bg-green-50 px-6 py-8 text-center">
           <p className="text-lg font-semibold text-green-900">
             Message sent!
           </p>
@@ -83,7 +83,7 @@ export default async function ContactPage({ searchParams }: Props) {
         <>
           {/* Error banner */}
           {error && (
-            <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {decodeURIComponent(error)}
             </div>
           )}
@@ -137,7 +137,7 @@ export default async function ContactPage({ searchParams }: Props) {
               <Input
                 id="subject"
                 name="subject"
-                placeholder="General inquiry, spa submission, feedback…"
+                placeholder="General inquiry, campground submission, feedback..."
               />
             </div>
 

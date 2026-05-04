@@ -3,15 +3,15 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | KSpa Online",
+  title: "Privacy Policy",
   description:
-    "Learn how KSpa Online collects, uses, and protects your personal information.",
+    "Learn how SiteFinder.Camp collects, uses, and protects your personal information.",
 };
 
 const LAST_UPDATED = "April 28, 2026";
-const CONTACT_EMAIL = "hello@kspa.online";
-const SITE_URL = "https://kspa.online";
-const COMPANY_NAME = "KSpa Online";
+const CONTACT_EMAIL = "hello@sitefinder.camp";
+const SITE_URL = "https://sitefinder.camp";
+const COMPANY_NAME = "SiteFinder.Camp";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -47,8 +47,8 @@ export default function PrivacyPolicyPage() {
               >
                 {SITE_URL}
               </a>
-              . We are an online directory that helps people discover Korean
-              spas, jjimjilbangs, and wellness centers across the United States.
+              . We are an online directory that helps people discover RV parks
+              and campgrounds across the United States.
             </p>
             <p className="mt-3 text-muted-foreground">
               If you have questions about this policy, contact us at{" "}
@@ -76,8 +76,8 @@ export default function PrivacyPolicyPage() {
                 plaintext password).
               </li>
               <li>
-                <strong className="text-foreground">Spa submissions</strong> — if
-                you submit a spa listing, we collect the spa&apos;s name, address,
+                <strong className="text-foreground">Campground submissions</strong> — if
+                you submit a campground listing, we collect the campground&apos;s name, address,
                 city, state, website, phone number, and your contact email.
               </li>
               <li>
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage() {
               </li>
               <li>
                 <strong className="text-foreground">Claim requests</strong> — if
-                you request to claim a spa listing as its owner, we collect your
+                you request to claim a campground listing as its owner, we collect your
                 name, email address, and any message you provide.
               </li>
               <li>
@@ -135,17 +135,17 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-semibold">3. How we use your information</h2>
             <ul className="mt-4 list-disc space-y-2 pl-5 text-muted-foreground">
-              <li>To operate the directory and display spa listings.</li>
+              <li>To operate the directory and display campground listings.</li>
               <li>
                 To create and manage your account and authenticate your
                 sessions.
               </li>
               <li>
-                To moderate reviews and spa submissions before they are
+                To moderate reviews and campground submissions before they are
                 published.
               </li>
               <li>
-                To process spa ownership claim requests and notify you of their
+                To process campground ownership claim requests and notify you of their
                 outcome.
               </li>
               <li>
@@ -210,7 +210,7 @@ export default function PrivacyPolicyPage() {
               regulatory reasons.
             </p>
             <p className="mt-3 text-muted-foreground">
-              Submitted spa listings and published reviews may remain on the
+              Submitted campground listings and published reviews may remain on the
               site after account deletion in anonymized form, since they
               constitute factual directory information.
             </p>
@@ -264,7 +264,7 @@ export default function PrivacyPolicyPage() {
             <p className="mt-4 text-muted-foreground">
               We use only essential cookies necessary for the site to function:
             </p>
-            <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50">
                   <tr>
@@ -332,8 +332,8 @@ export default function PrivacyPolicyPage() {
               10. Third-party links
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Spa listings may include links to external websites (spa websites,
-              Google Maps, Yelp, etc.). We are not responsible for the privacy
+              Campground listings may include links to external websites
+              (campground websites, maps, review platforms, etc.). We are not responsible for the privacy
               practices of those websites. We encourage you to review the privacy
               policy of any third-party site you visit.
             </p>
@@ -395,7 +395,7 @@ export default function PrivacyPolicyPage() {
               If you have questions, concerns, or requests related to this
               Privacy Policy, please reach out:
             </p>
-            <div className="mt-4 rounded-2xl border border-border bg-muted/30 px-6 py-5 text-muted-foreground">
+            <div className="mt-4 rounded-lg border border-border bg-muted/30 px-6 py-5 text-muted-foreground">
               <p className="font-medium text-foreground">{COMPANY_NAME}</p>
               <p className="mt-1">
                 Email:{" "}

@@ -9,7 +9,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-[28px] border border-border bg-card text-card-foreground shadow-sm",
+        "rounded-lg border border-border bg-card text-card-foreground shadow-sm",
         className
       )}
       {...props}
@@ -58,4 +58,3 @@ export function CardFooter({
     <div className={cn("flex items-center p-6 pt-0", className)} {...props} />
   );
 }
-

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post || post.post_type !== "page") return { title: "Not Found" };
 
   return {
-    title: `${post.title} | KSpa Online`,
+    title: post.title,
     description: post.excerpt ?? undefined,
   };
 }

@@ -9,9 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitAdvertisingLeadAction } from "./actions";
 
 export const metadata: Metadata = {
-  title: "Advertise | KSpa Online",
+  title: "Advertise",
   description:
-    "Reach people actively searching for Korean spas, jjimjilbangs, saunas, and wellness experiences.",
+    "Reach people actively searching for RV parks and campgrounds.",
 };
 
 type Props = {
@@ -23,21 +23,21 @@ const PACKAGES = [
     icon: Star,
     title: "Featured Listing",
     description:
-      "Appear at the top of search results with a Featured badge. Ideal for spas that want to stand out in the directory.",
+      "Appear at the top of search results with a Featured badge. Ideal for campgrounds that want to stand out in the directory.",
     price: "Starting at $49/mo",
   },
   {
     icon: TrendingUp,
     title: "Sponsored Directory Placement",
     description:
-      "Pin your listing as a Sponsored card above all organic results on the /spas browse page.",
+      "Pin your listing as a Sponsored card above all organic results on the campground browse page.",
     price: "Starting at $79/mo",
   },
   {
     icon: Zap,
     title: "Homepage Placement",
     description:
-      "Feature your spa in the curated homepage section seen by every visitor who lands on KSpa.online.",
+      "Feature your campground in the curated homepage section seen by visitors who land on SiteFinder.Camp.",
     price: "Starting at $149/mo",
   },
   {
@@ -50,8 +50,8 @@ const PACKAGES = [
 ];
 
 const BENEFITS = [
-  { icon: MapPin,      label: "Reach visitors actively searching for Korean spas" },
-  { icon: TrendingUp,  label: "Increase discovery and drive more walk-ins" },
+  { icon: MapPin,      label: "Reach visitors actively searching for campgrounds" },
+  { icon: TrendingUp,  label: "Increase discovery and drive more bookings" },
   { icon: Star,        label: "Promote specials, openings, and seasonal offers" },
   { icon: BarChart2,   label: "Simple click + impression reporting included" },
 ];
@@ -70,11 +70,11 @@ export default async function AdvertisePage({ searchParams }: Props) {
             Partner with us
           </p>
           <h1 className="mt-4 text-4xl font-bold leading-tight sm:text-5xl">
-            Advertise on KSpa Online
+            Advertise on SiteFinder.Camp
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-foreground/75">
-            Reach people actively searching for Korean spas, jjimjilbangs,
-            saunas, and wellness experiences — right when they&apos;re ready to book.
+            Reach people actively searching for RV parks and campgrounds
+            right when they&apos;re planning where to stay.
           </p>
         </Container>
       </section>
@@ -84,7 +84,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
         <Container className="max-w-3xl">
           <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
+              <div className="inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
                 <Clock className="size-3" />
                 Now accepting founding advertisers
               </div>
@@ -114,7 +114,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
             </div>
             <a
               href="#contact"
-              className="shrink-0 rounded-2xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground shadow-md transition hover:bg-primary/90"
+              className="shrink-0 rounded-lg bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground shadow-md transition hover:bg-primary/90"
             >
               Join the waitlist →
             </a>
@@ -135,7 +135,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {PACKAGES.map(({ icon: Icon, title, description, price }) => (
               <div key={title} className="surface flex flex-col gap-4 p-6">
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10">
+                <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
                   <Icon className="size-6 text-primary" />
                 </div>
                 <div>
@@ -155,7 +155,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
           <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
             {BENEFITS.map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-4">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                   <Icon className="size-5 text-primary" />
                 </div>
                 <p className="text-base font-medium">{label}</p>
@@ -179,7 +179,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
           </div>
 
           {success ? (
-            <div className="mt-10 rounded-2xl border border-green-200 bg-green-50 px-6 py-10 text-center">
+            <div className="mt-10 rounded-lg border border-green-200 bg-green-50 px-6 py-10 text-center">
               <p className="text-2xl font-semibold text-green-800">You&apos;re on the list!</p>
               <p className="mt-2 text-green-700">
                 We&apos;ll reach out personally before spots open to the public. Thanks for your interest.
@@ -188,7 +188,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
           ) : (
             <form action={submitAdvertisingLeadAction} className="mt-10 flex flex-col gap-5">
               {error && (
-                <div className="rounded-2xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-red-700">
+                <div className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-red-700">
                   {error}
                 </div>
               )}
@@ -206,8 +206,8 @@ export default async function AdvertisePage({ searchParams }: Props) {
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="company_name">Spa / Business Name</Label>
-                  <Input id="company_name" name="company_name" placeholder="Aqua Day Spa" />
+                  <Label htmlFor="company_name">Campground / Business Name</Label>
+                  <Input id="company_name" name="company_name" placeholder="Pine River RV Park" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="phone">Phone</Label>
@@ -217,7 +217,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="website">Website</Label>
-                <Input id="website" name="website" type="url" placeholder="https://yourspa.com" />
+                <Input id="website" name="website" type="url" placeholder="https://yourcampground.com" />
               </div>
 
               <div className="flex flex-col gap-2">
@@ -225,7 +225,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
                 <select
                   id="interest"
                   name="interest"
-                  className="flex h-11 w-full rounded-2xl border border-input bg-background px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex h-11 w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <option value="">Select an option…</option>
                   <option value="featured_listing">Featured Listing</option>
@@ -242,7 +242,7 @@ export default async function AdvertisePage({ searchParams }: Props) {
                   id="message"
                   name="message"
                   rows={4}
-                  placeholder="Tell us about your spa or campaign goals…"
+                  placeholder="Tell us about your campground or campaign goals..."
                 />
               </div>
 

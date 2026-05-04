@@ -9,8 +9,8 @@ import { PageIntro } from "@/components/layout/page-intro";
 import { listPublishedBlogPostsByType } from "@/lib/blog-posts";
 
 export const metadata: Metadata = {
-  title: "Blog | KSpa Online",
-  description: "News, roundups, and editorial content about Korean spas.",
+  title: "Blog",
+  description: "News, roundups, and editorial content about RV parks and campgrounds.",
 };
 
 export default async function BlogPage() {
@@ -21,12 +21,12 @@ export default async function BlogPage() {
       <Container className="py-12">
         <PageIntro
           eyebrow="Blog"
-          title="Korean Spa Blog"
-          description="News, roundups, and editorial content about Korean spa culture and destinations."
+          title="Campground Blog"
+          description="News, roundups, and editorial content about RV travel, campgrounds, and places to stay."
         />
 
         {posts.length === 0 ? (
-          <div className="mt-12 rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+          <div className="mt-12 rounded-lg border border-dashed border-border px-6 py-16 text-center">
             <BookOpen className="mx-auto size-10 text-muted-foreground/30" />
             <p className="mt-4 text-sm font-medium text-foreground">Posts coming soon</p>
             <p className="mt-1 text-sm text-muted-foreground">

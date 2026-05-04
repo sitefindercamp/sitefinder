@@ -4,11 +4,11 @@ import { Container } from "@/components/layout/container";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/80 py-8">
+    <footer className="border-t border-border/80 bg-[#071916] py-8 text-white">
       <Container className="flex flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>© 2026 Kspa.online.</p>
-        <div className="flex flex-wrap items-center gap-5">
-          <Link href="/spas">Search</Link>
+        <p className="text-white/60">© 2026 SiteFinder.Camp.</p>
+        <div className="flex flex-wrap items-center gap-5 text-white/68">
+          <Link href="/campgrounds">Search</Link>
           <Link href="/blog">Blog</Link>
           <Link href="/guides">Guides</Link>
           <Link href="/advertise">Advertise</Link>
@@ -21,4 +21,3 @@ export function SiteFooter() {
     </footer>
   );
 }
-

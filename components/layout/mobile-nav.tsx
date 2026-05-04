@@ -39,13 +39,13 @@ export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
   }, [open]);
 
   const overlay = open ? (
-    <div className="fixed inset-x-0 top-20 bottom-0 z-[60] flex flex-col overflow-y-auto border-t border-border bg-background">
+    <div className="fixed inset-x-0 top-[72px] bottom-0 z-[60] flex flex-col overflow-y-auto border-t border-white/10 bg-[#071916] text-white">
       <nav className="flex flex-col gap-1 px-6 py-6">
         {siteConfig.mainNav.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="rounded-xl px-4 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="rounded-md px-4 py-3 text-base font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white"
             onClick={() => setOpen(false)}
           >
             {item.label}
@@ -53,26 +53,26 @@ export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
         ))}
       </nav>
 
-      <div className="mx-6 border-t border-border" />
+      <div className="mx-6 border-t border-white/10" />
 
       <div className="flex flex-col gap-2 px-6 py-6">
         {isLoggedIn ? (
           <>
             {isAdmin && (
-              <Button asChild variant="ghost" className="justify-start rounded-xl">
+              <Button asChild variant="ghost" className="justify-start rounded-lg text-white hover:bg-white/10 hover:text-white">
                 <Link href={"/admin" as Route} onClick={() => setOpen(false)}>
                   Admin dashboard
                 </Link>
               </Button>
             )}
             {isOwner && (
-              <Button asChild variant="ghost" className="justify-start rounded-xl">
+              <Button asChild variant="ghost" className="justify-start rounded-lg text-white hover:bg-white/10 hover:text-white">
                 <Link href={"/owner/dashboard" as Route} onClick={() => setOpen(false)}>
-                  My spa
+                  My campground
                 </Link>
               </Button>
             )}
-            <Button asChild variant="ghost" className="justify-start rounded-xl">
+            <Button asChild variant="ghost" className="justify-start rounded-lg text-white hover:bg-white/10 hover:text-white">
               <Link href={"/account" as Route} onClick={() => setOpen(false)}>
                 My account
               </Link>
@@ -80,12 +80,12 @@ export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
           </>
         ) : (
           <>
-            <Button asChild variant="ghost" className="justify-start rounded-xl">
+            <Button asChild variant="ghost" className="justify-start rounded-lg text-white hover:bg-white/10 hover:text-white">
               <Link href={"/signin" as Route} onClick={() => setOpen(false)}>
                 Sign in
               </Link>
             </Button>
-            <Button asChild className="rounded-xl">
+            <Button asChild className="rounded-lg bg-[#d89a32] text-[#071916] hover:bg-[#e5a941]">
               <Link href={"/signup" as Route} onClick={() => setOpen(false)}>
                 Sign up
               </Link>
@@ -104,7 +104,7 @@ export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
         size="sm"
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="w-9 px-0"
+        className="w-9 px-0 text-white hover:bg-white/10 hover:text-white"
         onClick={() => setOpen((v) => !v)}
       >
         {open ? <X className="size-5" /> : <Menu className="size-5" />}

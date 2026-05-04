@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://mqkjumltnmkpmkkqdmcn.supabase.co/storage/v1/object/public/Website/socialshare.jpg",
+        url: "/images/sitefinder-hero-mountain-river.png",
         width: 1200,
         height: 630,
         alt: "SiteFinder.Camp",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ["https://mqkjumltnmkpmkkqdmcn.supabase.co/storage/v1/object/public/Website/socialshare.jpg"],
+    images: ["/images/sitefinder-hero-mountain-river.png"],
   },
 };
 

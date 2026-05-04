@@ -9,8 +9,8 @@ import { PageIntro } from "@/components/layout/page-intro";
 import { listPublishedBlogPostsByType } from "@/lib/blog-posts";
 
 export const metadata: Metadata = {
-  title: "Guides & Tips | KSpa Online",
-  description: "Expert guides, etiquette tips, and everything you need to know about Korean spas.",
+  title: "Guides & Tips",
+  description: "Practical guides for comparing RV parks and campgrounds.",
 };
 
 export default async function GuidesPage() {
@@ -21,16 +21,16 @@ export default async function GuidesPage() {
       <Container className="py-12">
         <PageIntro
           eyebrow="Guides"
-          title="Korean Spa Guides & Tips"
-          description="Expert guides, etiquette tips, and everything you need to know before your next visit."
+          title="Campground Guides & Tips"
+          description="Practical guides for comparing amenities, hookups, site access, and stay options."
         />
 
         {posts.length === 0 ? (
-          <div className="mt-12 rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+          <div className="mt-12 rounded-lg border border-dashed border-border px-6 py-16 text-center">
             <BookOpen className="mx-auto size-10 text-muted-foreground/30" />
             <p className="mt-4 text-sm font-medium text-foreground">Guides coming soon</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              We&apos;re working on helpful guides to make your spa experience better.
+              We&apos;re working on helpful guides to make campground planning easier.
             </p>
           </div>
         ) : (

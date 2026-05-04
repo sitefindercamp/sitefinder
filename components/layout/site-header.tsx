@@ -1,5 +1,4 @@
 import type { Route } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/container";
@@ -26,16 +25,6 @@ export async function SiteHeader() {
         .single();
       role = profile?.role as string | undefined;
 
-      // Belt-and-suspenders: if the profile role wasn't synced on approval,
-      // fall back to checking the spa_owners table directly by email.
-      if (role !== "owner" && role !== "admin" && user.email) {
-        const { data: spaOwner } = await adminClient
-          .from("spa_owners")
-          .select("id")
-          .eq("email", user.email)
-          .maybeSingle();
-        if (spaOwner) role = "owner";
-      }
     } catch {
       // profiles table not yet available — ignore
     }
@@ -45,17 +34,10 @@ export async function SiteHeader() {
   const isOwner = role === "owner";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/60 bg-background/80 backdrop-blur-xl">
-      <Container className="flex h-20 items-center gap-8">
-        <Link href="/" className="flex shrink-0 items-center">
-          <Image
-            src="https://mqkjumltnmkpmkkqdmcn.supabase.co/storage/v1/object/public/Website/logo_site.png"
-            alt="KSpa Online"
-            width={180}
-            height={48}
-            className="h-10 w-auto object-contain"
-            priority
-          />
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#071916]/95 text-white backdrop-blur-xl">
+      <Container className="flex h-[72px] items-center gap-8 py-4">
+        <Link href="/" className="flex shrink-0 items-center text-2xl font-bold tracking-tight text-white">
+          SiteFinder.Camp
         </Link>
 
         <nav className="hidden flex-1 items-center gap-6 md:flex">
@@ -63,7 +45,7 @@ export async function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              className="text-sm font-semibold text-white/72 hover:text-white"
             >
               {item.label}
             </Link>
@@ -81,7 +63,7 @@ export async function SiteHeader() {
               )}
               {isOwner && (
                 <Button asChild variant="ghost" className="hidden md:inline-flex">
-                  <Link href={"/owner/dashboard" as Route}>My spa</Link>
+                  <Link href={"/owner/dashboard" as Route}>My campground</Link>
                 </Button>
               )}
               <Button asChild variant="ghost" className="hidden md:inline-flex">
@@ -90,11 +72,11 @@ export async function SiteHeader() {
             </>
           ) : (
             <>
-              <Button asChild variant="ghost" className="hidden md:inline-flex">
+              <Button asChild variant="ghost" className="hidden text-white hover:bg-white/10 hover:text-white md:inline-flex">
                 <Link href={"/signin" as Route}>Sign in</Link>
               </Button>
-              <Button asChild className="hidden md:inline-flex">
-                <Link href={"/signup" as Route}>Sign up</Link>
+              <Button asChild className="hidden bg-[#4b8b6b] text-white hover:bg-[#5e9b7a] md:inline-flex">
+                <Link href={"/campgrounds" as Route}>Browse Campgrounds</Link>
               </Button>
             </>
           )}

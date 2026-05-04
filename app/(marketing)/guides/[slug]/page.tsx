@@ -16,7 +16,7 @@ import { injectGlossaryTooltips } from "@/lib/glossary";
 import { AUDIENCE_TAGS } from "@/lib/audience-tags";
 import { getCtaSpas } from "@/lib/spa-cta";
 
-const BASE_URL = "https://kspa.online";
+const BASE_URL = "https://sitefinder.camp";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Not Found" };
 
   return {
-    title: `${post.title} | KSpa Online`,
+    title: post.title,
     description: post.excerpt ?? undefined,
     openGraph: {
       title: post.title,
@@ -102,7 +102,7 @@ export default async function GuidePostPage({ params }: Props) {
 
         {/* Featured image */}
         {post.featured_image_url && (
-          <div className="relative mt-8 h-64 w-full overflow-hidden rounded-2xl sm:h-80 lg:h-[420px]">
+          <div className="relative mt-8 h-64 w-full overflow-hidden rounded-lg sm:h-80 lg:h-[420px]">
             <Image
               src={post.featured_image_url}
               alt={post.title}

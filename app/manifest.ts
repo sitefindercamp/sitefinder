@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Search RV parks and campgrounds across the US.",
     start_url: "/",
     display: "standalone",
-    background_color: "#fdf9f5",
-    theme_color: "#1a6960",
+    background_color: "#f6f8f1",
+    theme_color: "#071916",
     orientation: "portrait",
     icons: [
       {

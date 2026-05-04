@@ -10,7 +10,7 @@ import { ShareButtons } from "@/components/share-buttons";
 import { getPublishedBlogPostBySlug } from "@/lib/blog-posts";
 import { processBlogContent } from "@/lib/process-blog-content";
 
-const BASE_URL = "https://kspa.online";
+const BASE_URL = "https://sitefinder.camp";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post || post.post_type !== "blog") return { title: "Not Found" };
 
   return {
-    title: `${post.title} | KSpa Online`,
+    title: post.title,
     description: post.excerpt ?? undefined,
     openGraph: {
       title: post.title,
@@ -53,7 +53,7 @@ export default async function BlogPostPage({ params }: Props) {
         </Link>
 
         {post.featured_image_url && (
-          <div className="relative mt-8 h-64 w-full overflow-hidden rounded-2xl sm:h-80 lg:h-96">
+          <div className="relative mt-8 h-64 w-full overflow-hidden rounded-lg sm:h-80 lg:h-96">
             <Image
               src={post.featured_image_url}
               alt={post.title}

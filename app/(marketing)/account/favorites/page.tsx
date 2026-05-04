@@ -40,25 +40,25 @@ export default async function FavoritesPage() {
       <div className="mt-8">
         <h1 className="text-3xl font-bold tracking-tight">My favorites</h1>
         <p className="mt-2 text-muted-foreground">
-          Spas you&apos;ve saved for later.
+          Campgrounds you&apos;ve saved for later.
         </p>
       </div>
 
       {spas.length === 0 ? (
-        <div className="mt-12 flex flex-col items-center gap-4 rounded-3xl border border-dashed border-border py-16 text-center">
+        <div className="mt-12 flex flex-col items-center gap-4 rounded-lg border border-dashed border-border py-16 text-center">
           <Heart className="size-10 text-muted-foreground/40" />
           <p className="text-base font-medium text-muted-foreground">
             No favorites yet
           </p>
           <p className="max-w-xs text-sm text-muted-foreground/70">
-            Hit the <strong>Save</strong> button on any spa listing to bookmark
+            Hit the <strong>Save</strong> button on any campground listing to bookmark
             it here.
           </p>
           <Link
-            href={"/spas" as Route}
-            className="mt-2 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
+            href={"/campgrounds" as Route}
+            className="mt-2 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            Browse spas
+            Browse campgrounds
           </Link>
         </div>
       ) : (
@@ -68,7 +68,7 @@ export default async function FavoritesPage() {
             return (
               <Link
                 key={spa.id}
-                href={`/spas/${spa.slug}` as Route}
+                href={`/campgrounds/${spa.slug}` as Route}
                 className="group block"
               >
                 <Card className="h-full transition-shadow group-hover:shadow-md">

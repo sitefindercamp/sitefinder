@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "My Account | KSpa.online",
+  title: "My Account",
 };
 
 type Props = {
@@ -57,27 +57,6 @@ export default async function AccountPage({ searchParams }: Props) {
     role = (profile?.role as string) ?? null;
     displayName = (profile?.display_name as string) ?? null;
 
-    // Belt-and-suspenders: if the profile role wasn't synced on claim approval,
-    // fall back to checking the spa_owners table directly by email.
-    if (role !== "owner" && role !== "admin" && user.email) {
-      const { data: spaOwner } = await adminClient
-        .from("spa_owners")
-        .select("id")
-        .eq("email", user.email)
-        .maybeSingle();
-      if (spaOwner) role = "owner";
-    }
-
-    // Check for a pending claim so we can surface status to the user
-    if (role !== "owner" && role !== "admin" && user.email) {
-      const { data: pendingClaim } = await adminClient
-        .from("spa_claim_requests")
-        .select("id")
-        .eq("requester_email", user.email)
-        .eq("status", "pending")
-        .maybeSingle();
-      hasPendingClaim = !!pendingClaim;
-    }
   } catch {
     // profiles table not yet migrated — treat as regular user
   }
@@ -90,7 +69,7 @@ export default async function AccountPage({ searchParams }: Props) {
       <div className="mx-auto max-w-2xl">
         <h1 className="mb-2 text-3xl font-bold tracking-tight">My account</h1>
         <p className="mb-10 text-muted-foreground">
-          Manage your KSpa.online profile.
+          Manage your SiteFinder.Camp profile.
         </p>
 
         {/* Success banners */}
@@ -131,7 +110,7 @@ export default async function AccountPage({ searchParams }: Props) {
               <div className="flex items-center justify-between rounded-lg border px-4 py-3">
                 <span className="text-sm text-muted-foreground">Role</span>
                 <span className="text-sm font-medium capitalize">
-                  {isAdmin ? "Admin" : isOwner ? "Spa owner" : "Member"}
+                  {isAdmin ? "Admin" : isOwner ? "Campground owner" : "Member"}
                 </span>
               </div>
               <div className="flex items-center justify-between rounded-lg border px-4 py-3">
@@ -235,14 +214,14 @@ export default async function AccountPage({ searchParams }: Props) {
               <CardHeader>
                 <CardTitle>Admin dashboard</CardTitle>
                 <CardDescription>
-                  Manage spa listings, duplicates, imports, and more.
+                  Manage campground listings, imports, and more.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {[
                     { label: "Dashboard", href: "/admin" },
-                    { label: "Spas", href: "/admin/spas" },
+                    { label: "Listings", href: "/admin/spas" },
                     { label: "Duplicates", href: "/admin/duplicates" },
                     { label: "Imports", href: "/admin/imports" },
                   ].map((link) => (
@@ -260,19 +239,19 @@ export default async function AccountPage({ searchParams }: Props) {
             </Card>
           )}
 
-          {/* Spa owner quick-access */}
+          {/* Campground owner quick-access */}
           {isOwner && (
             <Card>
               <CardHeader>
-                <CardTitle>Your spa</CardTitle>
+                <CardTitle>Your campground</CardTitle>
                 <CardDescription>
-                  Manage your spa listing and details.
+                  Manage your campground listing and details.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button asChild>
                   <Link href={"/owner/dashboard" as Route}>
-                    Go to spa dashboard
+                    Go to campground dashboard
                   </Link>
                 </Button>
               </CardContent>
@@ -284,8 +263,8 @@ export default async function AccountPage({ searchParams }: Props) {
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
               <p className="text-sm font-semibold text-amber-900">Claim under review</p>
               <p className="mt-1 text-sm text-amber-800">
-                Your spa ownership claim has been submitted and is pending admin review.
-                Once approved, your spa dashboard will appear here.
+                Your campground ownership claim has been submitted and is pending admin review.
+                Once approved, your campground dashboard will appear here.
               </p>
             </div>
           )}
@@ -295,7 +274,7 @@ export default async function AccountPage({ searchParams }: Props) {
             <CardHeader>
               <CardTitle>Favorites</CardTitle>
               <CardDescription>
-                Spas you&apos;ve saved for later.
+                Campgrounds you&apos;ve saved for later.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -311,12 +290,12 @@ export default async function AccountPage({ searchParams }: Props) {
               <CardHeader>
                 <CardTitle>Reviews</CardTitle>
                 <CardDescription>
-                  Write and manage your spa reviews.
+                  Write and manage your campground reviews.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button asChild variant="outline">
-                  <Link href={"/spas" as Route}>Find a spa to review</Link>
+                  <Link href={"/campgrounds" as Route}>Find a campground to review</Link>
                 </Button>
               </CardContent>
             </Card>

@@ -3,15 +3,15 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | KSpa Online",
+  title: "Terms of Service",
   description:
-    "Read the terms and conditions governing use of KSpa Online, including rules for user accounts, reviews, and advertising.",
+    "Read the terms and conditions governing use of SiteFinder.Camp, including rules for user accounts, listings, and advertising.",
 };
 
 const LAST_UPDATED = "May 2, 2026";
-const CONTACT_EMAIL = "koreanspa@proton.me";
-const SITE_URL = "https://kspa.online";
-const COMPANY_NAME = "KSpa Online";
+const CONTACT_EMAIL = "hello@sitefinder.camp";
+const SITE_URL = "https://sitefinder.camp";
+const COMPANY_NAME = "SiteFinder.Camp";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -46,12 +46,12 @@ export default function TermsPage() {
         {/* Body */}
         <div className="space-y-12 text-base leading-7">
 
-          <Section title="1. About KSpa Online">
+          <Section title="1. About SiteFinder.Camp">
             <p>
               {COMPANY_NAME} ({SITE_URL}) is a directory and information
-              resource for Korean spas and jjimjilbangs. We provide spa
-              listings, user reviews, editorial guides, and advertising
-              opportunities to connect visitors with spa businesses.
+              resource for RV parks and campgrounds. We provide campground
+              listings, editorial guides, and advertising opportunities to
+              connect visitors with campground businesses.
             </p>
           </Section>
 
@@ -69,7 +69,7 @@ export default function TermsPage() {
 
           <Section title="3. User Accounts">
             <p>
-              You may create an account to submit reviews, save favorite spas,
+              You may create an account to submit reviews, save favorite campgrounds,
               and access other features. You are responsible for maintaining
               the confidentiality of your login credentials and for all
               activity under your account.
@@ -102,16 +102,16 @@ export default function TermsPage() {
             </p>
           </Section>
 
-          <Section title="5. Spa Listings">
+          <Section title="5. Campground Listings">
             <p>
-              Spa listings on {COMPANY_NAME} are provided for informational
+              Campground listings on {COMPANY_NAME} are provided for informational
               purposes only. We do not endorse, guarantee, or warrant the
               accuracy of any listing information, including hours, pricing,
               amenities, or ownership details.
             </p>
             <p>
-              Spa owners may claim and manage their listings subject to our
-              verification process. Owners are responsible for keeping their
+              Campground owners may claim and manage their listings subject to
+              our verification process. Owners are responsible for keeping their
               information accurate and up to date.
             </p>
           </Section>
@@ -147,7 +147,7 @@ export default function TermsPage() {
               accurate, complete, or current.
             </p>
             <p>
-              Visiting a spa listed on {COMPANY_NAME} is at your own risk. We
+              Visiting a campground listed on {COMPANY_NAME} is at your own risk. We
               are not liable for any experience, injury, loss, or damage arising
               from your use of any listed business.
             </p>
