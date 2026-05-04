@@ -103,7 +103,7 @@ export async function listCampgroundFilterOptions(): Promise<CampgroundFilterOpt
     throw new Error(`Failed to load campground filters: ${error.message}`);
   }
 
-  const rows = (data ?? []) as Array<Record<string, unknown>>;
+  const rows = (data ?? []) as unknown as Array<Record<string, unknown>>;
 
   return {
     states: uniqueSorted(rows.map((row) => row.state)),
@@ -155,7 +155,7 @@ export async function listPublishedCampgrounds(
   }
 
   return {
-    campgrounds: ((data ?? []) as Array<Record<string, unknown>>).map(toCampground),
+    campgrounds: ((data ?? []) as unknown as Array<Record<string, unknown>>).map(toCampground),
     totalCount: count ?? 0,
   };
 }
@@ -173,5 +173,5 @@ export async function getPublishedCampgroundBySlug(slug: string): Promise<Campgr
     throw new Error(`Failed to load campground: ${error.message}`);
   }
 
-  return data ? toCampground(data as Record<string, unknown>) : null;
+  return data ? toCampground(data as unknown as Record<string, unknown>) : null;
 }
