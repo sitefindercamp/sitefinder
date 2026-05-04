@@ -4,7 +4,7 @@ import type { Route } from "next";
 import { redirect } from "next/navigation";
 
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import { sendSpaSubmissionNotification } from "@/lib/mailerlite";
+import { sendCampgroundSubmissionNotification } from "@/lib/mailerlite";
 
 function toSlug(value: string) {
   return value
@@ -20,7 +20,7 @@ function emptyToNull(value: FormDataEntryValue | null): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-export async function submitSpaAction(formData: FormData) {
+export async function submitCampgroundAction(formData: FormData) {
   const name = (formData.get("name") as string | null)?.trim() ?? "";
   const city = (formData.get("city") as string | null)?.trim() ?? "";
   const state = (formData.get("state") as string | null)?.trim() ?? "";
@@ -28,19 +28,19 @@ export async function submitSpaAction(formData: FormData) {
   if (!name || !city || !state) {
     redirect(
       ("/submit?error=" +
-        encodeURIComponent("Spa name, city, and state are required.")) as Route
+        encodeURIComponent("Campground name, city, and state are required.")) as Route
     );
   }
 
   const supabase = createSupabaseAdminClient();
 
-  const baseSlug = toSlug(`${name} ${city}`);
+  const baseSlug = toSlug(`${name} ${city} ${state}`);
   let slug = baseSlug;
   let attempt = 0;
 
   while (attempt < 5) {
     const { data: existing } = await supabase
-      .from("spas")
+      .from("campgrounds")
       .select("id")
       .eq("slug", slug)
       .maybeSingle();
@@ -55,17 +55,18 @@ export async function submitSpaAction(formData: FormData) {
   const website = emptyToNull(formData.get("website"));
   const phone = emptyToNull(formData.get("phone"));
 
-  const { error } = await supabase.from("spas").insert({
+  const { error } = await supabase.from("campgrounds").insert({
     name,
     slug,
     city,
-    state,
+    state: state.toUpperCase(),
     status: "pending",
     website,
     phone,
-    address_line_1: emptyToNull(formData.get("address_line_1")),
-    summary: emptyToNull(formData.get("summary")),
-    important_notes: submittedByEmail ? `Submitted by: ${submittedByEmail}` : null,
+    address: emptyToNull(formData.get("address")),
+    description: emptyToNull(formData.get("description")),
+    campground_type: emptyToNull(formData.get("campground_type")),
+    submitted_by_email: submittedByEmail,
   });
 
   if (error) {
@@ -75,7 +76,16 @@ export async function submitSpaAction(formData: FormData) {
     );
   }
 
-  await sendSpaSubmissionNotification({ spaName: name, city, state, submitterEmail: submittedByEmail, website, phone });
+  await sendCampgroundSubmissionNotification({
+    campgroundName: name,
+    city,
+    state,
+    submitterEmail: submittedByEmail,
+    website,
+    phone,
+  });
 
   redirect("/submit?success=1" as Route);
 }
+
+export const submitSpaAction = submitCampgroundAction;

@@ -1,6 +1,6 @@
 import type { Route } from "next";
 
-import { submitSpaAction } from "@/app/(marketing)/submit/actions";
+import { submitCampgroundAction } from "@/app/(marketing)/submit/actions";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,16 +8,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export const metadata = {
-  title: "Submit a Spa | KSpa.online",
+  title: "Submit a Campground | SiteFinder.Camp",
   description:
-    "Know a Korean spa we're missing? Submit it for review and we'll add it to the directory.",
+    "Know an RV park or campground we're missing? Submit it for review and we'll add it to the directory.",
 };
 
 type Props = {
   searchParams?: Promise<{ success?: string; error?: string }>;
 };
 
-export default async function SubmitSpaPage({ searchParams }: Props) {
+export default async function SubmitCampgroundPage({ searchParams }: Props) {
   const params = await searchParams;
   const success = params?.success === "1";
   const error = params?.error ? decodeURIComponent(params.error) : null;
@@ -28,9 +28,9 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
         <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
           Directory
         </p>
-        <h1 className="mt-3 text-4xl font-semibold">Submit a Korean spa</h1>
+        <h1 className="mt-3 text-4xl font-semibold">Submit a campground</h1>
         <p className="mt-4 text-base leading-7 text-muted-foreground">
-          Know a spa we&apos;re missing? Fill in what you know — our team will
+          Know an RV park or campground we&apos;re missing? Fill in what you know — our team will
           review it and add it to the directory. Fields marked{" "}
           <span className="text-foreground">*</span> are required.
         </p>
@@ -48,7 +48,7 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
               href={"/submit" as Route}
               className="mt-6 inline-block text-sm font-medium text-green-800 underline hover:text-green-900"
             >
-              Submit another spa
+              Submit another campground
             </a>
           </div>
         ) : (
@@ -59,7 +59,7 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
               </div>
             )}
 
-            <form action={submitSpaAction} className="mt-10 flex flex-col gap-6">
+            <form action={submitCampgroundAction} className="mt-10 flex flex-col gap-6">
               {/* Basic info */}
               <fieldset className="flex flex-col gap-4">
                 <legend className="text-sm font-semibold uppercase tracking-[0.15em] text-muted-foreground">
@@ -68,13 +68,13 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
 
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="name">
-                    Spa name <span className="text-destructive">*</span>
+                    Campground name <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="name"
                     name="name"
                     type="text"
-                    placeholder="e.g. King Spa & Sauna"
+                    placeholder="e.g. Pine Grove RV Park"
                     required
                     maxLength={200}
                   />
@@ -89,7 +89,7 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
                       id="city"
                       name="city"
                       type="text"
-                      placeholder="e.g. Dallas"
+                    placeholder="e.g. Cookeville"
                       required
                       maxLength={100}
                     />
@@ -102,7 +102,7 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
                       id="state"
                       name="state"
                       type="text"
-                      placeholder="e.g. TX"
+                    placeholder="e.g. TN"
                       required
                       maxLength={50}
                     />
@@ -110,13 +110,24 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="address_line_1">Street address</Label>
+                  <Label htmlFor="address">Street address</Label>
                   <Input
-                    id="address_line_1"
-                    name="address_line_1"
+                    id="address"
+                    name="address"
                     type="text"
-                    placeholder="e.g. 2154 Royal Ln"
+                    placeholder="e.g. 1200 Crabtree Circle"
                     maxLength={200}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="campground_type">Campground type</Label>
+                  <Input
+                    id="campground_type"
+                    name="campground_type"
+                    type="text"
+                    placeholder="e.g. Private RV park"
+                    maxLength={120}
                   />
                 </div>
               </fieldset>
@@ -154,15 +165,15 @@ export default async function SubmitSpaPage({ searchParams }: Props) {
               {/* Description */}
               <fieldset className="flex flex-col gap-4">
                 <legend className="text-sm font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                  About this spa
+                  About this campground
                 </legend>
 
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="summary">Brief description</Label>
+                  <Label htmlFor="description">Brief description</Label>
                   <Textarea
-                    id="summary"
-                    name="summary"
-                    placeholder="A short description of the spa — what makes it worth visiting, what services it offers, etc."
+                    id="description"
+                    name="description"
+                    placeholder="A short description of the campground, RV sites, amenities, and nearby attractions."
                     rows={4}
                     maxLength={600}
                   />

@@ -116,6 +116,7 @@ create table if not exists public.campgrounds (
   description text,
   source_filename text,
   source_row_number integer,
+  submitted_by_email text,
   is_featured boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

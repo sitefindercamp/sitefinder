@@ -6,9 +6,9 @@ import { CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/layout/container";
 
 export const metadata: Metadata = {
-  title: "About | KSpa Online",
+  title: "About | SiteFinder.Camp",
   description:
-    "KSpa Online is your trusted guide to discovering Korean spas, jjimjilbangs, and wellness destinations across the United States.",
+    "SiteFinder.Camp is a searchable RV park and campground database built around practical camping details.",
 };
 
 const FOCUS_POINTS = [
@@ -30,19 +30,17 @@ export default function AboutPage() {
             About us
           </p>
           <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl">
-            Your trusted guide to great wellness destinations.
+            A clearer way to compare campgrounds.
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            Welcome to our directory — your trusted guide to discovering unique
-            wellness destinations, hidden gems, and standout places worth
-            visiting.
+            SiteFinder.Camp is a searchable database for RV parks, campgrounds,
+            and practical camping destinations.
           </p>
           <p className="mt-4 text-lg leading-8 text-muted-foreground">
-            We created this platform to make it easier for people to explore
-            businesses with confidence. Whether you&apos;re planning your next
-            relaxing getaway, searching for a local favorite, or comparing
-            options before you visit, our goal is to bring helpful, organized,
-            and easy-to-understand information all in one place.
+            We created this platform to make campground research easier. Whether
+            you need full hookups, 50 amp service, pull-through sites, showers,
+            laundry, pet-friendly stays, or monthly options, our goal is to put
+            the useful details in one place.
           </p>
         </div>
 
@@ -83,7 +81,7 @@ export default function AboutPage() {
               favorite place, we&apos;re here to help you explore smarter.
             </p>
             <Link
-              href={"/spas" as Route}
+              href={"/campgrounds" as Route}
               className="mt-5 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
             >
               Browse the directory →
@@ -102,7 +100,7 @@ export default function AboutPage() {
               href={"/submit" as Route}
               className="mt-5 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
             >
-              Submit your spa →
+              Submit your campground →
             </Link>
           </div>
         </div>
@@ -122,10 +120,10 @@ export default function AboutPage() {
           </p>
           <div className="mt-7 flex flex-wrap gap-4">
             <Link
-              href={"/spas" as Route}
+              href={"/campgrounds" as Route}
               className="rounded-full bg-primary-foreground px-5 py-2.5 text-sm font-semibold text-primary transition hover:opacity-90"
             >
-              Explore spas
+              Explore campgrounds
             </Link>
             <Link
               href={"/contact" as Route}

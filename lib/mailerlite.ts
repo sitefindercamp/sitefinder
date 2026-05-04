@@ -2,9 +2,9 @@
 // Docs: https://resend.com/docs/api-reference/emails/send-email
 
 const RESEND_API_URL = "https://api.resend.com/emails";
-const FROM_EMAIL = "hello@kspa.online";
-const FROM_NAME = "KSpa Online";
-const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL ?? "koreanspa@proton.me";
+const FROM_EMAIL = "hello@sitefinder.camp";
+const FROM_NAME = "SiteFinder.Camp";
+const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL ?? "hello@sitefinder.camp";
 
 type EmailPayload = {
   from: string;
@@ -304,10 +304,10 @@ export async function sendClaimRejectedEmail(claim: ClaimEmailData): Promise<voi
   });
 }
 
-// ── Spa submission email ──────────────────────────────────────────────────────
+// ── Campground submission email ───────────────────────────────────────────────
 
-type SpaSubmissionEmailData = {
-  spaName: string;
+type CampgroundSubmissionEmailData = {
+  campgroundName: string;
   city: string;
   state: string;
   submitterEmail?: string | null;
@@ -315,38 +315,53 @@ type SpaSubmissionEmailData = {
   phone?: string | null;
 };
 
-export async function sendSpaSubmissionNotification(data: SpaSubmissionEmailData): Promise<void> {
+export async function sendCampgroundSubmissionNotification(data: CampgroundSubmissionEmailData): Promise<void> {
   await sendEmail({
     from: `${FROM_NAME} <${FROM_EMAIL}>`,
     to: [ADMIN_EMAIL],
-    subject: `New spa submission: ${data.spaName}`,
+    subject: `New campground submission: ${data.campgroundName}`,
     text: [
-      `A new spa has been submitted for review on KSpa Online.`,
+      `A new campground has been submitted for review on SiteFinder.Camp.`,
       ``,
-      `Spa:          ${data.spaName}`,
+      `Campground:   ${data.campgroundName}`,
       `Location:     ${data.city}, ${data.state}`,
       `Website:      ${data.website ?? "—"}`,
       `Phone:        ${data.phone ?? "—"}`,
       `Submitted by: ${data.submitterEmail ?? "Anonymous"}`,
       ``,
-      `Review submissions: https://kspa.online/admin/spas`,
+      `Review submissions in the SiteFinder admin.`,
     ].join("\n"),
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
-        <h2 style="margin-bottom:4px">New spa submission</h2>
-        <p style="color:#666;margin-top:0">Submitted via <a href="https://kspa.online/submit">kspa.online/submit</a></p>
+        <h2 style="margin-bottom:4px">New campground submission</h2>
+        <p style="color:#666;margin-top:0">Submitted via <a href="https://sitefinder.camp/submit">sitefinder.camp/submit</a></p>
         <table style="width:100%;border-collapse:collapse;margin-top:20px">
-          <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;width:120px">Spa name</td><td style="padding:8px 0;border-bottom:1px solid #eee"><strong>${data.spaName}</strong></td></tr>
+          <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;width:120px">Campground</td><td style="padding:8px 0;border-bottom:1px solid #eee"><strong>${data.campgroundName}</strong></td></tr>
           <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666">Location</td><td style="padding:8px 0;border-bottom:1px solid #eee">${data.city}, ${data.state}</td></tr>
           <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666">Website</td><td style="padding:8px 0;border-bottom:1px solid #eee">${data.website ? `<a href="${data.website}">${data.website}</a>` : "—"}</td></tr>
           <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666">Phone</td><td style="padding:8px 0;border-bottom:1px solid #eee">${data.phone ?? "—"}</td></tr>
           <tr><td style="padding:8px 0;color:#666">Submitted by</td><td style="padding:8px 0">${data.submitterEmail ?? "Anonymous"}</td></tr>
         </table>
-        <div style="margin-top:28px">
-          <a href="https://kspa.online/admin/spas" style="background:#0e6c5d;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">Review in admin →</a>
-        </div>
       </div>
     `,
+  });
+}
+
+export async function sendSpaSubmissionNotification(data: {
+  spaName: string;
+  city: string;
+  state: string;
+  submitterEmail?: string | null;
+  website?: string | null;
+  phone?: string | null;
+}): Promise<void> {
+  return sendCampgroundSubmissionNotification({
+    campgroundName: data.spaName,
+    city: data.city,
+    state: data.state,
+    submitterEmail: data.submitterEmail,
+    website: data.website,
+    phone: data.phone,
   });
 }
 
