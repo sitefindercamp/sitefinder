@@ -181,7 +181,7 @@ export default function PrivacyPolicyPage() {
               <li>
                 <strong className="text-foreground">Service providers</strong> —
                 we use Supabase (database and authentication), Vercel (hosting
-                and analytics), and MailerLite (transactional email). Each
+                and analytics), and Resend for transactional email when configured. Each
                 provider only receives the data necessary to perform their
                 service and is bound by data processing agreements.
               </li>

@@ -4,7 +4,7 @@ import type { Route } from "next";
 import { redirect } from "next/navigation";
 
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import { sendCampgroundSubmissionNotification } from "@/lib/mailerlite";
+import { sendCampgroundSubmissionNotification } from "@/lib/resend";
 
 function toSlug(value: string) {
   return value

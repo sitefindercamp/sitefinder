@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import {
   sendContactNotification,
   sendContactConfirmation,
-} from "@/lib/mailerlite";
+} from "@/lib/resend";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 function clean(value: FormDataEntryValue | null): string {

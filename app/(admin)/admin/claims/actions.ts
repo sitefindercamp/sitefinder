@@ -4,7 +4,7 @@ import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { approveClaim, rejectClaim, revokeSpaOwner } from "@/lib/spa-claims";
-import { sendClaimApprovedEmail, sendClaimRejectedEmail } from "@/lib/mailerlite";
+import { sendClaimApprovedEmail, sendClaimRejectedEmail } from "@/lib/resend";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 async function getClaimDetails(claim_id: string) {

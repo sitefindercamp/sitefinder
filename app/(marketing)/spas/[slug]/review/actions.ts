@@ -9,7 +9,7 @@ import {
   createSupabaseAdminClient,
   createSupabaseServerClient,
 } from "@/lib/supabase/server";
-import { sendReviewNotification } from "@/lib/mailerlite";
+import { sendReviewNotification } from "@/lib/resend";
 
 export async function submitSpaReviewAction(formData: FormData) {
   const slug = String(formData.get("slug") ?? "");

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getPublishedSpaBySlug } from "@/lib/admin-spas";
 import { submitClaimRequest } from "@/lib/spa-claims";
-import { sendClaimNotification } from "@/lib/mailerlite";
+import { sendClaimNotification } from "@/lib/resend";
 
 export async function submitClaimAction(slug: string, formData: FormData) {
   const requester_name = formData.get("requester_name") as string;

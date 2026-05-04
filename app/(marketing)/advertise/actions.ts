@@ -3,7 +3,7 @@
 import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { submitAdvertisingLead } from "@/lib/ad-campaigns";
-import { sendAdLeadNotification, sendAdLeadConfirmation } from "@/lib/mailerlite";
+import { sendAdLeadNotification, sendAdLeadConfirmation } from "@/lib/resend";
 
 export async function submitAdvertisingLeadAction(formData: FormData) {
   const name = (formData.get("name") as string | null)?.trim() ?? "";
