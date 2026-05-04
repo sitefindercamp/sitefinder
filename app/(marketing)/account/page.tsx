@@ -45,7 +45,6 @@ export default async function AccountPage({ searchParams }: Props) {
   // Fetch profile using admin client to bypass RLS reliably
   let role: string | null = null;
   let displayName: string | null = null;
-  let hasPendingClaim = false;
 
   try {
     const adminClient = createSupabaseAdminClient();
@@ -256,17 +255,6 @@ export default async function AccountPage({ searchParams }: Props) {
                 </Button>
               </CardContent>
             </Card>
-          )}
-
-          {/* Pending claim notice */}
-          {hasPendingClaim && (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
-              <p className="text-sm font-semibold text-amber-900">Claim under review</p>
-              <p className="mt-1 text-sm text-amber-800">
-                Your campground ownership claim has been submitted and is pending admin review.
-                Once approved, your campground dashboard will appear here.
-              </p>
-            </div>
           )}
 
           {/* Favorites */}
