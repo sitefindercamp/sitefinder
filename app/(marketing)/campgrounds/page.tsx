@@ -14,8 +14,9 @@ import {
   listCampgroundFilterOptions,
   listPublishedCampgrounds,
   type CampgroundFilters,
+  type CampgroundFilterOptions,
 } from "@/lib/campgrounds";
-import { CAMPGROUND_AMENITIES, type CampgroundAmenityKey } from "@/types/campground";
+import { CAMPGROUND_AMENITIES, type Campground, type CampgroundAmenityKey } from "@/types/campground";
 
 const PAGE_SIZE = 24;
 const AMENITY_KEYS = new Set(CAMPGROUND_AMENITIES.map((amenity) => amenity.key));
@@ -150,10 +151,19 @@ export default async function CampgroundsPage({ searchParams }: Props) {
     amenities: parseAmenities(params?.amenities),
   };
 
-  const [filterOptions, result] = await Promise.all([
-    listCampgroundFilterOptions(),
-    listPublishedCampgrounds(filters, page, PAGE_SIZE),
-  ]);
+  let filterOptions: CampgroundFilterOptions = { states: [], cities: [], campgroundTypes: [] };
+  let result: { campgrounds: Campground[]; totalCount: number } = { campgrounds: [], totalCount: 0 };
+  let loadError = false;
+
+  try {
+    [filterOptions, result] = await Promise.all([
+      listCampgroundFilterOptions(),
+      listPublishedCampgrounds(filters, page, PAGE_SIZE),
+    ]);
+  } catch (error) {
+    loadError = true;
+    console.error("Failed to load campground directory", error);
+  }
 
   const totalPages = Math.max(1, Math.ceil(result.totalCount / PAGE_SIZE));
 
@@ -241,7 +251,9 @@ export default async function CampgroundsPage({ searchParams }: Props) {
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
-            {result.totalCount.toLocaleString()} campground{result.totalCount === 1 ? "" : "s"} found
+            {loadError
+              ? "Campground listings are temporarily unavailable"
+              : `${result.totalCount.toLocaleString()} campground${result.totalCount === 1 ? "" : "s"} found`}
           </p>
           <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
             <MapPin className="size-4" />
@@ -258,9 +270,13 @@ export default async function CampgroundsPage({ searchParams }: Props) {
         ) : (
           <Card className="rounded-lg">
             <CardContent className="p-8 text-center">
-              <h2 className="text-xl font-semibold">No campgrounds found</h2>
+              <h2 className="text-xl font-semibold">
+                {loadError ? "Unable to load campgrounds" : "No campgrounds found"}
+              </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Try clearing a filter or searching a wider area.
+                {loadError
+                  ? "Please refresh the page in a moment."
+                  : "Try clearing a filter or searching a wider area."}
               </p>
             </CardContent>
           </Card>

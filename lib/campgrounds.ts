@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
 import type { Campground, CampgroundAmenityKey } from "@/types/campground";
 
 const CAMPGROUND_SELECT = [
@@ -29,7 +29,7 @@ const CAMPGROUND_SELECT = [
   "dump_station",
   "description",
   "is_featured",
-].join(", ");
+].join(",");
 
 export type CampgroundFilters = {
   q: string;
@@ -58,6 +58,42 @@ function uniqueSorted(values: Array<unknown>) {
         .filter(Boolean)
     ),
   ].sort((a, b) => a.localeCompare(b));
+}
+
+function campgroundApiUrl(params: URLSearchParams) {
+  const url = new URL(`${getSupabaseUrl().replace(/\/$/, "")}/rest/v1/campgrounds`);
+  params.forEach((value, key) => {
+    url.searchParams.append(key, value);
+  });
+  return url;
+}
+
+async function fetchCampgroundRows(
+  params: URLSearchParams,
+  options?: { count?: boolean }
+): Promise<{ rows: Array<Record<string, unknown>>; count: number | null }> {
+  const response = await fetch(campgroundApiUrl(params), {
+    headers: {
+      apikey: getSupabaseAnonKey(),
+      Authorization: `Bearer ${getSupabaseAnonKey()}`,
+      ...(options?.count ? { Prefer: "count=exact" } : {}),
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Failed to load campgrounds: ${response.status} ${body}`);
+  }
+
+  const rows = (await response.json()) as Array<Record<string, unknown>>;
+  const contentRange = response.headers.get("content-range");
+  const count = contentRange ? Number.parseInt(contentRange.split("/")[1] ?? "", 10) : null;
+
+  return {
+    rows,
+    count: Number.isFinite(count) ? count : null,
+  };
 }
 
 function toCampground(row: Record<string, unknown>): Campground {
@@ -93,17 +129,12 @@ function toCampground(row: Record<string, unknown>): Campground {
 }
 
 export async function listCampgroundFilterOptions(): Promise<CampgroundFilterOptions> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("campgrounds")
-    .select("state, city, campground_type")
-    .eq("status", "published");
-
-  if (error) {
-    throw new Error(`Failed to load campground filters: ${error.message}`);
-  }
-
-  const rows = (data ?? []) as unknown as Array<Record<string, unknown>>;
+  const params = new URLSearchParams({
+    select: "state,city,campground_type",
+    status: "eq.published",
+    limit: "5000",
+  });
+  const { rows } = await fetchCampgroundRows(params);
 
   return {
     states: uniqueSorted(rows.map((row) => row.state)),
@@ -117,61 +148,52 @@ export async function listPublishedCampgrounds(
   page: number,
   pageSize: number
 ): Promise<{ campgrounds: Campground[]; totalCount: number }> {
-  const supabase = await createSupabaseServerClient();
-  let query = supabase
-    .from("campgrounds")
-    .select(CAMPGROUND_SELECT, { count: "exact" })
-    .eq("status", "published");
+  const params = new URLSearchParams({
+    select: CAMPGROUND_SELECT,
+    status: "eq.published",
+    order: "is_featured.desc,name.asc",
+    offset: String((page - 1) * pageSize),
+    limit: String(pageSize),
+  });
 
-  if (filters.state) query = query.ilike("state", filters.state);
-  if (filters.city) query = query.ilike("city", filters.city);
-  if (filters.campground_type) query = query.ilike("campground_type", filters.campground_type);
+  if (filters.state) params.set("state", `ilike.${filters.state}`);
+  if (filters.city) params.set("city", `ilike.${filters.city}`);
+  if (filters.campground_type) params.set("campground_type", `ilike.${filters.campground_type}`);
 
-  for (const amenity of filters.amenities) {
-    query = query.eq(amenity, true);
-  }
+  filters.amenities.forEach((amenity) => params.set(amenity, "eq.true"));
 
   const searchTerm = cleanSearchTerm(filters.q);
   if (searchTerm) {
     const pattern = `%${searchTerm}%`;
-    query = query.or(
-      [
+    params.set(
+      "or",
+      `(${[
         `name.ilike.${pattern}`,
         `city.ilike.${pattern}`,
         `state.ilike.${pattern}`,
         `zip.ilike.${pattern}`,
         `campground_type.ilike.${pattern}`,
-      ].join(",")
+      ].join(",")})`
     );
   }
 
-  const { data, error, count } = await query
-    .order("is_featured", { ascending: false })
-    .order("name", { ascending: true })
-    .range((page - 1) * pageSize, page * pageSize - 1);
-
-  if (error) {
-    throw new Error(`Failed to load campgrounds: ${error.message}`);
-  }
+  const { rows, count } = await fetchCampgroundRows(params, { count: true });
 
   return {
-    campgrounds: ((data ?? []) as unknown as Array<Record<string, unknown>>).map(toCampground),
+    campgrounds: rows.map(toCampground),
     totalCount: count ?? 0,
   };
 }
 
 export async function getPublishedCampgroundBySlug(slug: string): Promise<Campground | null> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("campgrounds")
-    .select(CAMPGROUND_SELECT)
-    .eq("status", "published")
-    .eq("slug", slug)
-    .maybeSingle();
+  const params = new URLSearchParams({
+    select: CAMPGROUND_SELECT,
+    status: "eq.published",
+    slug: `eq.${slug}`,
+    limit: "1",
+  });
 
-  if (error) {
-    throw new Error(`Failed to load campground: ${error.message}`);
-  }
+  const { rows } = await fetchCampgroundRows(params);
 
-  return data ? toCampground(data as unknown as Record<string, unknown>) : null;
+  return rows[0] ? toCampground(rows[0]) : null;
 }
