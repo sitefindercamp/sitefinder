@@ -9,7 +9,7 @@ function getRequiredEnv(name: "NEXT_PUBLIC_SUPABASE_URL" | "NEXT_PUBLIC_SUPABASE
 }
 
 export function getSupabaseUrl() {
-  return getRequiredEnv("NEXT_PUBLIC_SUPABASE_URL");
+  return getRequiredEnv("NEXT_PUBLIC_SUPABASE_URL").replace(/\/rest\/v1\/?$/, "");
 }
 
 export function getSupabaseAnonKey() {
@@ -19,4 +19,3 @@ export function getSupabaseAnonKey() {
 export function getSupabaseServiceRoleKey() {
   return getRequiredEnv("SUPABASE_SERVICE_ROLE_KEY");
 }
-

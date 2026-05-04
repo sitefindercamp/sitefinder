@@ -61,7 +61,8 @@ function uniqueSorted(values: Array<unknown>) {
 }
 
 function campgroundApiUrl(params: URLSearchParams) {
-  const url = new URL(`${getSupabaseUrl().replace(/\/$/, "")}/rest/v1/campgrounds`);
+  const supabaseUrl = getSupabaseUrl().replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
+  const url = new URL(`${supabaseUrl}/rest/v1/campgrounds`);
   params.forEach((value, key) => {
     url.searchParams.append(key, value);
   });
