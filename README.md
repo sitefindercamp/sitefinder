@@ -31,6 +31,14 @@ Deployed with Vercel from the SiteFinder.Camp GitHub repository.
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`.
 4. Run `npm run dev`.
 
+## Database setup
+
+Run the SiteFinder migration in the new Supabase project before importing CSV data:
+
+`supabase/migrations/20260504000000_sitefinder_core_schema.sql`
+
+The old Kspa migrations are preserved under `supabase/legacy_kspa_migrations` for reference only.
+
 ## Notes
 
 - Claim flow is inherited from the source app and still needs campground-specific copy.

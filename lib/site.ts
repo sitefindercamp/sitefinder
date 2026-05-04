@@ -12,7 +12,7 @@ export const siteConfig = {
   url: "https://sitefinder.camp",
   mainNav: [
     { href: "/", label: "Home" },
-    { href: "/spas", label: "Search" },
+    { href: "/campgrounds", label: "Search" },
     { href: "/blog", label: "Blog" },
     { href: "/guides", label: "Guides" },
   ] satisfies NavItem[],
