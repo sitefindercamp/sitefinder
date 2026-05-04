@@ -1,5 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
+import { Heart } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -45,7 +46,9 @@ export async function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-semibold text-white/72 hover:text-white"
+              className={`border-b-2 pb-1 text-sm font-semibold hover:text-white ${
+                item.href === "/" ? "border-[#e5d960] text-white" : "border-transparent text-white/72"
+              }`}
             >
               {item.label}
             </Link>
@@ -69,11 +72,20 @@ export async function SiteHeader() {
               <Button asChild variant="ghost" className="hidden md:inline-flex">
                 <Link href={"/account" as Route}>My account</Link>
               </Button>
+              <Button asChild variant="ghost" className="hidden text-white hover:bg-white/10 hover:text-white md:inline-flex">
+                <Link href={"/account/favorites" as Route}>
+                  <Heart className="size-4" />
+                  Favorites
+                </Link>
+              </Button>
             </>
           ) : (
             <>
               <Button asChild variant="ghost" className="hidden text-white hover:bg-white/10 hover:text-white md:inline-flex">
-                <Link href={"/signin" as Route}>Sign in</Link>
+                <Link href={"/account/favorites" as Route}>
+                  <Heart className="size-4" />
+                  Favorites
+                </Link>
               </Button>
               <Button asChild className="hidden bg-[#4b8b6b] text-white hover:bg-[#5e9b7a] md:inline-flex">
                 <Link href={"/campgrounds" as Route}>Browse Campgrounds</Link>

@@ -1,20 +1,33 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, Plug, Search, ShieldCheck, SlidersHorizontal, TentTree, Waves } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Map,
+  MapPin,
+  Plug,
+  Search,
+  ShieldCheck,
+  SlidersHorizontal,
+  TentTree,
+  TreePine,
+  Waves,
+} from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 async function getCampgroundCount() {
   try {
     const supabase = await createSupabaseServerClient();
     const { count, error } = await supabase
       .from("campgrounds")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "published");
+      .select("id", { count: "exact", head: true });
 
     if (error) return 0;
     return count ?? 0;
@@ -25,68 +38,110 @@ async function getCampgroundCount() {
 
 export default async function HomePage() {
   const campgroundCount = await getCampgroundCount();
-  const proofPoints = [
-    { value: campgroundCount.toLocaleString(), label: "published listings" },
-    { value: "83", label: "source files imported" },
-    { value: "50", label: "state-level searching" },
+  const heroStats = [
+    {
+      icon: TreePine,
+      value: `${campgroundCount.toLocaleString()}+`,
+      label: "Campgrounds and RV parks",
+    },
+    {
+      icon: TentTree,
+      value: "50",
+      label: "States covered",
+    },
+    {
+      icon: ShieldCheck,
+      value: "Detailed Info",
+      label: "Hookups, amenities, site access and more",
+    },
   ];
 
   return (
-    <div className="bg-background">
-      <section className="relative isolate min-h-[740px] overflow-hidden bg-[#071916] text-white">
+    <div className="bg-white">
+      <section className="relative isolate overflow-hidden bg-[#071916] text-white">
         <Image
           src="/images/sitefinder-hero-mountain-river.png"
           alt="Mountain river campground with an RV at dusk"
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,22,0.94)_0%,rgba(7,25,22,0.72)_43%,rgba(7,25,22,0.18)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-36 bg-[linear-gradient(180deg,rgba(7,25,22,0)_0%,hsl(var(--background))_92%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,22,0.86)_0%,rgba(7,25,22,0.54)_47%,rgba(7,25,22,0.18)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(7,25,22,0)_0%,rgba(7,25,22,0.62)_100%)]" />
 
-        <Container className="relative z-10 flex min-h-[740px] items-center pb-28 pt-20">
+        <Container className="relative z-10 flex min-h-[640px] items-center pb-12 pt-14 lg:min-h-[680px]">
           <div className="max-w-4xl">
-            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
-              Find RV parks and campgrounds with the details that matter.
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#b8d98d]">
+              Your next adventure starts here
+            </p>
+            <h1 className="mt-4 max-w-3xl text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Find RV Parks & Campgrounds
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/78 sm:text-xl">
-              Search a growing campground database by location, park type, hookups, amp service,
-              pull-through access, pet policies, monthly stays, and more.
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/82 sm:text-lg">
+              Search thousands of RV parks and campgrounds with the details that matter:
+              hookups, site access, amenities, and more.
             </p>
 
             <form action="/campgrounds" className="mt-9 max-w-4xl">
-              <div className="grid gap-3 rounded-lg border border-white/15 bg-white p-3 shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:grid-cols-[1fr_auto]">
-                <div className="relative flex-1">
+              <div className="grid overflow-hidden rounded-lg border border-white/20 bg-white shadow-[0_22px_70px_rgba(0,0,0,0.30)] lg:grid-cols-[1fr_210px_180px_auto]">
+                <div className="relative min-w-0 border-b border-border lg:border-b-0 lg:border-r">
                   <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
                   <input
                     type="text"
                     name="q"
-                    placeholder="Search by name, city, state, zip, or park type"
-                    className="h-14 w-full rounded-md bg-secondary/55 pl-12 pr-4 text-base text-foreground outline-none ring-1 ring-border transition focus:bg-white focus:ring-2 focus:ring-ring"
+                    placeholder="Search by name, city, state, or campground type"
+                    className="h-16 w-full bg-white pl-12 pr-4 text-base text-foreground outline-none transition placeholder:text-muted-foreground/72 focus:bg-secondary/35"
                   />
                 </div>
-                <Button type="submit" size="lg" className="h-14 shrink-0 bg-primary px-6 text-base hover:bg-primary/92">
-                  Search
+                <label className="relative flex h-16 items-center border-b border-border pl-12 pr-4 text-sm font-medium text-foreground lg:border-b-0 lg:border-r">
+                  <MapPin className="pointer-events-none absolute left-5 size-4 text-muted-foreground" />
+                  <select
+                    name="state"
+                    defaultValue=""
+                    className="w-full appearance-none bg-transparent pr-7 outline-none"
+                    aria-label="Location"
+                  >
+                    <option value="">Any Location</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="FL">Florida</option>
+                    <option value="TX">Texas</option>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 size-4 text-muted-foreground" />
+                </label>
+                <label className="relative flex h-16 items-center border-b border-border pl-12 pr-4 text-sm font-medium text-foreground lg:border-b-0 lg:border-r">
+                  <TentTree className="pointer-events-none absolute left-5 size-4 text-muted-foreground" />
+                  <select
+                    name="campground_type"
+                    defaultValue=""
+                    className="w-full appearance-none bg-transparent pr-7 outline-none"
+                    aria-label="Campground type"
+                  >
+                    <option value="">All Types</option>
+                    <option value="RV Park">RV Park</option>
+                    <option value="Campground">Campground</option>
+                    <option value="Resort">Resort</option>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 size-4 text-muted-foreground" />
+                </label>
+                <Button type="submit" className="m-3 h-12 shrink-0 rounded-md bg-primary px-6 text-sm font-bold hover:bg-primary/92">
+                  Search Campgrounds
                   <ArrowRight data-icon="inline-end" />
                 </Button>
               </div>
             </form>
 
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-[#d89a32] text-[#071916] hover:bg-[#e5a941]">
-                <Link href={"/campgrounds" as Route}>Browse Campgrounds</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/35 bg-white/8 text-white hover:bg-white hover:text-[#071916]">
-                <Link href={"/submit" as Route}>Submit a Campground</Link>
-              </Button>
-            </div>
-
-            <div className="mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
-              {proofPoints.map((item) => (
-                <div key={item.label} className="border-l border-white/24 pl-4">
-                  <p className="text-3xl font-semibold text-white">{item.value}</p>
-                  <p className="mt-1 text-sm font-medium uppercase tracking-[0.12em] text-white/58">{item.label}</p>
+            <div className="mt-7 grid max-w-4xl gap-5 sm:grid-cols-3">
+              {heroStats.map(({ icon: Icon, value, label }, index) => (
+                <div key={label} className="flex items-center gap-4">
+                  <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-[#67bd8e]/70 bg-[#2f7a58]/70 text-white shadow-[0_0_0_4px_rgba(78,139,102,0.20)]">
+                    <Icon className="size-6" />
+                  </div>
+                  <div className={index > 0 ? "border-l border-white/24 pl-5" : ""}>
+                    <p className="text-xl font-bold leading-none text-white sm:text-2xl">{value}</p>
+                    <p className="mt-1 max-w-[180px] text-sm leading-5 text-white/78">{label}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -94,60 +149,78 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="-mt-12 pb-16">
-        <Container className="relative z-10">
-          <div className="grid gap-4 md:grid-cols-3">
+      <section className="bg-white py-14 sm:py-16">
+        <Container>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">
+              Built for RV travelers
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              The details you need, in one place.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground sm:text-base">
+              We organize the practical information that helps you find the right campground
+              for your rig, your trip, and your travel style.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-3">
             {[
               {
-                icon: MapPin,
-                title: "Location-first search",
-                body: "Browse by state, city, campground type, or a specific search term.",
+                icon: Plug,
+                title: "Hookups",
+                body: "Find full hookups, 30 amp, and 50 amp service so you can stay comfortable.",
+                cta: "Explore Hookups",
               },
               {
-                icon: SlidersHorizontal,
-                title: "RV-ready filters",
-                body: "Filter for full hookups, 30/50 amp, pull-through sites, Wi-Fi, showers, and more.",
+                icon: Map,
+                title: "Site Access",
+                body: "Filter for pull-through sites, big rig access, site length, and easy in-and-out.",
+                cta: "Explore Site Access",
               },
               {
-                icon: ShieldCheck,
-                title: "Structured records",
-                body: "Each listing uses a consistent database format for easier comparison.",
+                icon: Waves,
+                title: "Comforts",
+                body: "Search for Wi-Fi, laundry, showers, pet-friendly stays, pools, and more.",
+                cta: "Explore Comforts",
               },
-            ].map(({ icon: Icon, title, body }) => (
-              <Card key={title} className="rounded-lg border-white/70 bg-white/94 shadow-[0_18px_50px_rgba(20,43,34,0.12)] backdrop-blur">
-                <CardContent className="p-6">
-                  <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
-                    <Icon className="size-5" />
+            ].map(({ icon: Icon, title, body, cta }) => (
+              <Card key={title} className="rounded-lg border-[#cfd8cb] bg-white shadow-none">
+                <CardContent className="flex min-h-[180px] flex-col p-5 sm:p-6">
+                  <div className="flex gap-5">
+                    <div className="flex size-14 shrink-0 items-center justify-center rounded-md bg-secondary text-primary">
+                      <Icon className="size-7" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold leading-tight">{title}</h2>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p>
+                    </div>
                   </div>
-                  <h2 className="mt-5 text-xl font-semibold">{title}</h2>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p>
+                  <Link
+                    href={"/campgrounds" as Route}
+                    className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-primary hover:text-primary/80"
+                  >
+                    {cta}
+                    <ArrowRight className="size-4" />
+                  </Link>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </Container>
-      </section>
 
-      <section className="border-y border-border bg-white py-16">
-        <Container className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
-          <div>
-            <h2 className="text-3xl font-semibold sm:text-4xl">Narrow the search before you roll in.</h2>
-            <p className="mt-4 text-base leading-7 text-muted-foreground">
-              SiteFinder.Camp is built around practical campground fields, so travelers can compare
-              the details that change a stay.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-8 grid max-w-5xl overflow-hidden rounded-lg border border-[#d6ded2] bg-white md:grid-cols-4">
             {[
-              { icon: Plug, label: "Hookups", body: "Full, 30 amp, 50 amp" },
-              { icon: TentTree, label: "Site access", body: "Pull-through and big-rig" },
-              { icon: Waves, label: "Comforts", body: "Showers, laundry, pool" },
-              { icon: MapPin, label: "Stays", body: "Pet-friendly and monthly" },
-            ].map(({ icon: Icon, label, body }) => (
-              <div key={label} className="rounded-lg border border-border bg-background p-5">
-                <Icon className="size-5 text-primary" />
-                <h3 className="mt-4 font-semibold">{label}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p>
+              { icon: ShieldCheck, title: "Trusted Data", body: "Curated campground information you can rely on." },
+              { icon: SlidersHorizontal, title: "Always Growing", body: "New campgrounds added regularly." },
+              { icon: Map, title: "Plan With Confidence", body: "Everything you need to choose the right spot." },
+              { icon: TentTree, title: "Save Favorites", body: "Build a list of your favorite places." },
+            ].map(({ icon: Icon, title, body }) => (
+              <div key={title} className="flex gap-4 border-b border-[#d6ded2] p-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+                <Icon className="mt-1 size-7 shrink-0 text-primary" />
+                <div>
+                  <h3 className="text-sm font-bold">{title}</h3>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{body}</p>
+                </div>
               </div>
             ))}
           </div>
