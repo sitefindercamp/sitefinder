@@ -244,17 +244,11 @@ export default async function CampgroundsPage({ searchParams }: Props) {
   return (
     <Container className="py-8 sm:py-10">
       <div className="flex flex-col gap-6">
-        <div className="grid gap-4 lg:grid-cols-[1fr_300px] lg:items-end">
-          <PageIntro
-            eyebrow="Campground Directory"
-            title="Find RV parks and campgrounds"
-            description="Search by location, campground type, and practical RV amenities from the SiteFinder.Camp database."
-          />
-          <div className="hidden rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground lg:block">
-            <p className="font-medium text-foreground">Compact results</p>
-            <p className="mt-1">Scan more listings with filters, contacts, and quick links close by.</p>
-          </div>
-        </div>
+        <PageIntro
+          eyebrow="Campground Directory"
+          title="Find RV parks and campgrounds"
+          description="Search by location, campground type, and practical RV amenities from the SiteFinder.Camp database."
+        />
 
         <Card className="rounded-lg">
           <CardContent className="p-4">

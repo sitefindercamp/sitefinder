@@ -78,31 +78,19 @@ export function CompactCampgroundCard({ campground }: { campground: Campground }
   const amenityLabels = getAmenityLabels(campground);
   const location = [campground.city, campground.state].filter(Boolean).join(", ");
   const hasContact = Boolean(campground.phone || campground.website);
+  const summaryAmenityLabels = amenityLabels.filter((label) => label !== "Full hookups").slice(0, 4);
 
   return (
-    <article className="rounded-lg border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/35">
+    <article className="rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/35">
       <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            {campground.campground_type ? (
-              <Badge variant="secondary" className="rounded-md px-2 py-0.5">
-                {campground.campground_type}
-              </Badge>
-            ) : null}
-            {campground.full_hookups ? (
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-primary">
-                Full hookups
-              </Badge>
-            ) : null}
-          </div>
-
-          <h2 className="mt-2 text-lg font-semibold leading-tight text-foreground">
+          <h2 className="text-2xl font-bold leading-tight text-foreground sm:text-[1.7rem]">
             <Link href={`/campgrounds/${campground.slug}` as Route} className="hover:text-primary">
               {campground.name}
             </Link>
           </h2>
 
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-muted-foreground">
             {location ? (
               <span className="inline-flex items-center gap-1.5">
                 <MapPin className="size-4" />
@@ -112,22 +100,32 @@ export function CompactCampgroundCard({ campground }: { campground: Campground }
             <span>{campground.price_range ?? "Pricing varies"}</span>
           </div>
 
-          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+          <p className="mt-3 line-clamp-2 text-base leading-7 text-muted-foreground">
             {campground.description ?? "Campground details are being prepared."}
           </p>
 
-          {amenityLabels.length > 0 ? (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {amenityLabels.slice(0, 3).map((label) => (
-                <span
-                  key={label}
-                  className="rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-          ) : null}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {campground.campground_type ? (
+              <Badge variant="secondary" className="rounded-md px-2.5 py-1 text-sm">
+                {campground.campground_type}
+              </Badge>
+            ) : null}
+            {campground.full_hookups ? (
+              <Badge variant="outline" className="rounded-md px-2.5 py-1 text-sm text-primary">
+                Full hookups
+              </Badge>
+            ) : null}
+            {summaryAmenityLabels.length > 0
+              ? summaryAmenityLabels.map((label) => (
+                  <span
+                    key={label}
+                    className="rounded-md bg-secondary px-2.5 py-1 text-sm font-medium text-secondary-foreground"
+                  >
+                    {label}
+                  </span>
+                ))
+              : null}
+          </div>
         </div>
 
         <div className="flex items-center gap-2 sm:flex-col sm:items-end sm:justify-between">
