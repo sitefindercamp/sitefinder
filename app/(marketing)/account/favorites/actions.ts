@@ -8,13 +8,13 @@ import { addFavorite, isSpaFavorited, removeFavorite } from "@/lib/spa-favorites
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /**
- * Toggle the favorite state for a spa.
+ * Toggle the favorite state for a campground.
  * Called from the FavoriteButton client component via a server action.
  * Returns the new favorited state so the client can stay in sync.
  */
 export async function toggleFavoriteAction(
-  spaId: string,
-  spaSlug: string
+  campgroundId: string,
+  campgroundSlug: string
 ): Promise<{ favorited: boolean }> {
   const supabase = await createSupabaseServerClient();
   const {
@@ -27,14 +27,14 @@ export async function toggleFavoriteAction(
     );
   }
 
-  const already = await isSpaFavorited(user.id, spaId);
+  const already = await isSpaFavorited(user.id, campgroundId);
   if (already) {
-    await removeFavorite(user.id, spaId);
+    await removeFavorite(user.id, campgroundId);
   } else {
-    await addFavorite(user.id, spaId);
+    await addFavorite(user.id, campgroundId);
   }
 
-  revalidatePath(`/spas/${spaSlug}` as Route);
+  revalidatePath(`/campgrounds/${campgroundSlug}` as Route);
   revalidatePath("/account/favorites" as Route);
 
   return { favorited: !already };

@@ -18,6 +18,7 @@ import {
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { listCampgroundFilterOptions } from "@/lib/campgrounds";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -36,8 +37,19 @@ async function getCampgroundCount() {
   }
 }
 
+async function getHomepageFilterOptions() {
+  try {
+    return await listCampgroundFilterOptions();
+  } catch {
+    return { states: [], cities: [], campgroundTypes: [] };
+  }
+}
+
 export default async function HomePage() {
-  const campgroundCount = await getCampgroundCount();
+  const [campgroundCount, filterOptions] = await Promise.all([
+    getCampgroundCount(),
+    getHomepageFilterOptions(),
+  ]);
   const heroStats = [
     {
       icon: TreePine,
@@ -103,10 +115,11 @@ export default async function HomePage() {
                     aria-label="Location"
                   >
                     <option value="">Any Location</option>
-                    <option value="CA">California</option>
-                    <option value="CO">Colorado</option>
-                    <option value="FL">Florida</option>
-                    <option value="TX">Texas</option>
+                    {filterOptions.states.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-4 size-4 text-muted-foreground" />
                 </label>
@@ -119,9 +132,11 @@ export default async function HomePage() {
                     aria-label="Campground type"
                   >
                     <option value="">All Types</option>
-                    <option value="RV Park">RV Park</option>
-                    <option value="Campground">Campground</option>
-                    <option value="Resort">Resort</option>
+                    {filterOptions.campgroundTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-4 size-4 text-muted-foreground" />
                 </label>

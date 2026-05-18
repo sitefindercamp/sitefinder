@@ -89,7 +89,7 @@ export default async function SubmitCampgroundPage({ searchParams }: Props) {
                       id="city"
                       name="city"
                       type="text"
-                    placeholder="e.g. Cookeville"
+                      placeholder="e.g. Cookeville"
                       required
                       maxLength={100}
                     />
@@ -102,7 +102,7 @@ export default async function SubmitCampgroundPage({ searchParams }: Props) {
                       id="state"
                       name="state"
                       type="text"
-                    placeholder="e.g. TN"
+                      placeholder="e.g. TN"
                       required
                       maxLength={50}
                     />

@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { SiteNavLink } from "@/components/layout/site-nav-link";
 import { Button } from "@/components/ui/button";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { siteConfig } from "@/lib/site";
@@ -43,15 +44,7 @@ export async function SiteHeader() {
 
         <nav className="hidden flex-1 items-center gap-6 md:flex">
           {siteConfig.mainNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`border-b-2 pb-1 text-sm font-semibold hover:text-white ${
-                item.href === "/" ? "border-[#e5d960] text-white" : "border-transparent text-white/72"
-              }`}
-            >
-              {item.label}
-            </Link>
+            <SiteNavLink key={item.href} href={item.href} label={item.label} />
           ))}
         </nav>
 

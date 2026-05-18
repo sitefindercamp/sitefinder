@@ -1,17 +1,16 @@
 import type { Route } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 
 import { CTA_VARIANTS, type CtaVariant } from "@/lib/cta-variants";
-import type { CtaSpa } from "@/lib/spa-cta";
+import type { CtaCampground } from "@/lib/campground-cta";
 
 type Props = {
   variant: string;
-  spas: CtaSpa[];
+  campgrounds: CtaCampground[];
 };
 
-export function GuideCta({ variant, spas }: Props) {
+export function GuideCta({ variant, campgrounds }: Props) {
   const meta = CTA_VARIANTS[variant as CtaVariant] ?? CTA_VARIANTS.general;
 
   return (
@@ -27,40 +26,27 @@ export function GuideCta({ variant, spas }: Props) {
         </div>
       </div>
 
-      {/* Spa mini-cards */}
-      {spas.length > 0 && (
+      {campgrounds.length > 0 && (
         <div className="grid grid-cols-1 gap-2 px-5 pb-4 sm:grid-cols-3">
-          {spas.map((spa) => (
+          {campgrounds.map((campground) => (
             <Link
-              key={spa.id}
-              href={`/spas/${spa.slug}` as Route}
+              key={campground.id}
+              href={`/campgrounds/${campground.slug}` as Route}
               className="group flex items-center gap-2.5 overflow-hidden rounded-xl border border-border bg-background/80 p-2.5 transition-colors hover:border-primary/30 hover:bg-background"
             >
-              {/* Thumbnail */}
               <div className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-secondary">
-                {spa.image_url ? (
-                  <Image
-                    src={spa.image_url}
-                    alt={spa.name}
-                    fill
-                    className="object-cover"
-                    sizes="40px"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center">
-                    <MapPin className="size-4 text-muted-foreground/40" />
-                  </div>
-                )}
+                <div className="flex size-full items-center justify-center">
+                  <MapPin className="size-4 text-muted-foreground/40" />
+                </div>
               </div>
 
-              {/* Name + location */}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-foreground group-hover:text-primary">
-                  {spa.name}
+                  {campground.name}
                 </p>
-                {(spa.city || spa.state) && (
+                {(campground.city || campground.state) && (
                   <p className="truncate text-xs text-muted-foreground">
-                    {[spa.city, spa.state].filter(Boolean).join(", ")}
+                    {[campground.city, campground.state].filter(Boolean).join(", ")}
                   </p>
                 )}
               </div>

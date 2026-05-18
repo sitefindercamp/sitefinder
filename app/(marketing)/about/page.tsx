@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const FOCUS_POINTS = [
   "Clear, useful listings",
   "Important details upfront",
-  "Honest reviews and community insights",
+  "Helpful planning context",
   "Easy browsing by location and features",
   "Helping businesses get discovered",
 ];
@@ -48,7 +48,7 @@ export default function AboutPage() {
         <section className="mb-14">
           <h2 className="text-2xl font-semibold">Why we exist</h2>
           <p className="mt-5 text-base leading-8 text-muted-foreground">
-            Finding quality places online can be frustrating. Information is
+            Finding the right campground online can be frustrating. Information is
             often outdated, scattered across multiple websites, or missing the
             details people actually care about. We built this directory to solve
             that problem by creating a cleaner, more user-friendly way to browse
@@ -70,15 +70,15 @@ export default function AboutPage() {
         {/* Two-column cards */}
         <div className="mb-14 grid gap-6 sm:grid-cols-2">
           <div className="rounded-2xl border border-border bg-muted/30 p-7">
-            <h2 className="text-xl font-semibold">For visitors</h2>
+            <h2 className="text-xl font-semibold">For campers</h2>
             <p className="mt-4 text-sm leading-7 text-muted-foreground">
-              We want every visitor to feel confident before they go. That means
+              We want every traveler to feel confident before they go. That means
               giving you access to helpful information like amenities, pricing,
-              contact details, photos, and what to expect before visiting.
+              contact details, stay options, and what to expect before booking.
             </p>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Whether you&apos;re a first-time visitor or someone looking for a new
-              favorite place, we&apos;re here to help you explore smarter.
+              Whether you&apos;re planning a weekend stop or looking for a reliable
+              long-stay option, we&apos;re here to help you compare smarter.
             </p>
             <Link
               href={"/campgrounds" as Route}
@@ -89,10 +89,10 @@ export default function AboutPage() {
           </div>
 
           <div className="rounded-2xl border border-border bg-muted/30 p-7">
-            <h2 className="text-xl font-semibold">For business owners</h2>
+            <h2 className="text-xl font-semibold">For campground owners</h2>
             <p className="mt-4 text-sm leading-7 text-muted-foreground">
               We believe great businesses deserve visibility. Our platform gives
-              owners the opportunity to showcase what makes their location
+              owners the opportunity to showcase what makes their campground
               special, connect with new customers, and stand out in a growing
               marketplace.
             </p>

@@ -15,6 +15,14 @@ type MobileNavProps = {
   isOwner: boolean;
 };
 
+function isActivePath(pathname: string, href: Route) {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -41,16 +49,23 @@ export function MobileNav({ isLoggedIn, isAdmin, isOwner }: MobileNavProps) {
   const overlay = open ? (
     <div className="fixed inset-x-0 top-[72px] bottom-0 z-[60] flex flex-col overflow-y-auto border-t border-white/10 bg-[#071916] text-white">
       <nav className="flex flex-col gap-1 px-6 py-6">
-        {siteConfig.mainNav.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="rounded-md px-4 py-3 text-base font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white"
-            onClick={() => setOpen(false)}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {siteConfig.mainNav.map((item) => {
+          const active = isActivePath(pathname, item.href);
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={active ? "page" : undefined}
+              className={`rounded-md px-4 py-3 text-base font-semibold transition-colors hover:bg-white/10 hover:text-white ${
+                active ? "bg-white/10 text-white" : "text-white/75"
+              }`}
+              onClick={() => setOpen(false)}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="mx-6 border-t border-white/10" />

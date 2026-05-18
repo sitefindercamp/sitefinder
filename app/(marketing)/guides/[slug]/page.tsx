@@ -14,7 +14,7 @@ import { parseHeadings, injectHeadingIds, splitContentSegments } from "@/lib/gui
 import { processBlogContent } from "@/lib/process-blog-content";
 import { injectGlossaryTooltips } from "@/lib/glossary";
 import { AUDIENCE_TAGS } from "@/lib/audience-tags";
-import { getCtaSpas } from "@/lib/spa-cta";
+import { getCtaCampgrounds } from "@/lib/campground-cta";
 import { siteConfig } from "@/lib/site";
 
 type Props = {
@@ -73,9 +73,9 @@ export default async function GuidePostPage({ params }: Props) {
     : null;
   const segments = processedHtml ? splitContentSegments(processedHtml) : [];
 
-  // Fetch CTA spas once (reused across all CTA blocks in this guide)
+  // Fetch CTA campgrounds once (reused across all CTA blocks in this guide)
   const hasCtas = segments.some((s) => s.type === "cta");
-  const ctaSpas = hasCtas ? await getCtaSpas(3) : [];
+  const ctaCampgrounds = hasCtas ? await getCtaCampgrounds(3) : [];
 
   // Audience tag labels (only the ones actually set on this post)
   const audienceTags = (post.audience_tags ?? [])
@@ -184,7 +184,7 @@ export default async function GuidePostPage({ params }: Props) {
                     dangerouslySetInnerHTML={{ __html: processBlogContent(segment.html) }}
                   />
                 ) : (
-                  <GuideCta key={i} variant={segment.variant} spas={ctaSpas} />
+                  <GuideCta key={i} variant={segment.variant} campgrounds={ctaCampgrounds} />
                 )
               )
             ) : (
